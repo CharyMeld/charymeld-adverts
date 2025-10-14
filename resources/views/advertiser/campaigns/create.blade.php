@@ -13,48 +13,48 @@
         <!-- Campaign Type -->
         <div class="bg-white rounded-xl shadow-lg p-6">
             <h2 class="text-xl font-bold mb-4">Campaign Type</h2>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <label class="cursor-pointer">
                     <input type="radio" name="ad_type" value="classified" checked class="peer sr-only" onchange="toggleAdTypeFields()">
-                    <div class="border-2 border-gray-300 peer-checked:border-primary-600 peer-checked:bg-primary-50 rounded-xl p-4 text-center hover:border-primary-400 transition">
-                        <svg class="w-12 h-12 mx-auto mb-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="border-2 border-gray-300 peer-checked:border-primary-600 peer-checked:bg-primary-50 rounded-xl p-4 text-center hover:border-primary-400 transition min-h-[160px] flex flex-col justify-center">
+                        <svg class="w-12 h-12 mx-auto mb-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                         </svg>
-                        <p class="font-semibold">Classified</p>
-                        <p class="text-xs text-gray-500">Product listing</p>
+                        <p class="font-semibold text-gray-900 mb-1">Classified</p>
+                        <p class="text-xs text-gray-500 leading-tight">Product listing</p>
                     </div>
                 </label>
 
                 <label class="cursor-pointer">
                     <input type="radio" name="ad_type" value="banner" class="peer sr-only" onchange="toggleAdTypeFields()">
-                    <div class="border-2 border-gray-300 peer-checked:border-primary-600 peer-checked:bg-primary-50 rounded-xl p-4 text-center hover:border-primary-400 transition">
-                        <svg class="w-12 h-12 mx-auto mb-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="border-2 border-gray-300 peer-checked:border-primary-600 peer-checked:bg-primary-50 rounded-xl p-4 text-center hover:border-primary-400 transition min-h-[160px] flex flex-col justify-center">
+                        <svg class="w-12 h-12 mx-auto mb-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
-                        <p class="font-semibold">Banner</p>
-                        <p class="text-xs text-gray-500">Image ads</p>
+                        <p class="font-semibold text-gray-900 mb-1">Banner</p>
+                        <p class="text-xs text-gray-500 leading-tight">Image ads</p>
                     </div>
                 </label>
 
                 <label class="cursor-pointer">
                     <input type="radio" name="ad_type" value="text" class="peer sr-only" onchange="toggleAdTypeFields()">
-                    <div class="border-2 border-gray-300 peer-checked:border-primary-600 peer-checked:bg-primary-50 rounded-xl p-4 text-center hover:border-primary-400 transition">
-                        <svg class="w-12 h-12 mx-auto mb-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="border-2 border-gray-300 peer-checked:border-primary-600 peer-checked:bg-primary-50 rounded-xl p-4 text-center hover:border-primary-400 transition min-h-[160px] flex flex-col justify-center">
+                        <svg class="w-12 h-12 mx-auto mb-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
-                        <p class="font-semibold">Text</p>
-                        <p class="text-xs text-gray-500">Text only ads</p>
+                        <p class="font-semibold text-gray-900 mb-1">Text</p>
+                        <p class="text-xs text-gray-500 leading-tight">Text only ads</p>
                     </div>
                 </label>
 
                 <label class="cursor-pointer">
                     <input type="radio" name="ad_type" value="video" class="peer sr-only" onchange="toggleAdTypeFields()">
-                    <div class="border-2 border-gray-300 peer-checked:border-primary-600 peer-checked:bg-primary-50 rounded-xl p-4 text-center hover:border-primary-400 transition">
-                        <svg class="w-12 h-12 mx-auto mb-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="border-2 border-gray-300 peer-checked:border-primary-600 peer-checked:bg-primary-50 rounded-xl p-4 text-center hover:border-primary-400 transition min-h-[160px] flex flex-col justify-center">
+                        <svg class="w-12 h-12 mx-auto mb-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                         </svg>
-                        <p class="font-semibold">Video</p>
-                        <p class="text-xs text-gray-500">Video ads</p>
+                        <p class="font-semibold text-gray-900 mb-1">Video</p>
+                        <p class="text-xs text-gray-500 leading-tight">Video ads</p>
                     </div>
                 </label>
             </div>
