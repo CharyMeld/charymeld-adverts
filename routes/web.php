@@ -144,7 +144,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     // Users Management
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
+    Route::post('/users', [AdminUserController::class, 'store'])->middleware(['bot.detect', 'throttle:5,1'])->name('users.store');
     Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
+    Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [AdminUserController::class, 'update'])->middleware(['bot.detect', 'throttle:10,1'])->name('users.update');
     Route::post('/users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->middleware('throttle:10,1')->name('users.toggle-status');
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->middleware('throttle:5,1')->name('users.destroy');
 

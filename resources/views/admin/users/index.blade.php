@@ -7,9 +7,14 @@
             <h1 class="text-3xl font-bold text-gray-900">Users Management</h1>
             <p class="mt-1 text-gray-600">Manage all registered users</p>
         </div>
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary btn-sm">
-            ← Back to Dashboard
-        </a>
+        <div class="flex gap-3">
+            <a href="{{ route('admin.users.create') }}" class="btn btn-primary btn-sm">
+                + Create User
+            </a>
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary btn-sm">
+                ← Back to Dashboard
+            </a>
+        </div>
     </div>
 
     <!-- Search and Filters -->
@@ -91,6 +96,10 @@
                                 <a href="{{ route('admin.users.show', $user) }}"
                                    class="text-primary-600 hover:text-primary-800">
                                     View
+                                </a>
+                                <a href="{{ route('admin.users.edit', $user) }}"
+                                   class="text-blue-600 hover:text-blue-800">
+                                    Edit
                                 </a>
                                 <form method="POST" action="{{ route('admin.users.toggle-status', $user) }}" class="inline">
                                     @csrf
