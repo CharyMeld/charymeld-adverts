@@ -121,11 +121,11 @@
             </div>
         </div>
 
-        <!-- Banner/Text Ad Fields -->
+        <!-- Banner Ad Fields -->
         <div id="banner-fields" class="bg-white rounded-xl shadow-lg p-6 hidden">
-            <h2 class="text-xl font-bold mb-4">Ad Creative</h2>
+            <h2 class="text-xl font-bold mb-4">Banner Ad Creative</h2>
             <div class="space-y-4">
-                <div id="banner-image-field">
+                <div>
                     <label for="banner_image" class="block text-sm font-medium text-gray-700 mb-2">Banner Image *</label>
                     <p class="text-sm text-gray-500 mb-2">Recommended sizes: 728x90, 300x250, 336x280</p>
                     <input type="file" name="banner_image" id="banner_image" accept="image/*"
@@ -156,6 +156,118 @@
                         <option value="160x600">Wide Skyscraper (160x600)</option>
                         <option value="300x600">Half Page (300x600)</option>
                     </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Text Ad Fields -->
+        <div id="text-fields" class="bg-white rounded-xl shadow-lg p-6 hidden">
+            <h2 class="text-xl font-bold mb-4">Text Ad Content</h2>
+            <div class="space-y-4">
+                <div>
+                    <label for="text_headline" class="block text-sm font-medium text-gray-700 mb-2">Headline *</label>
+                    <input type="text" name="text_headline" id="text_headline" value="{{ old('text_headline') }}" maxlength="60"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                        placeholder="Your attention-grabbing headline (max 60 characters)">
+                    <p class="text-xs text-gray-500 mt-1">60 characters maximum</p>
+                    @error('text_headline')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="text_body" class="block text-sm font-medium text-gray-700 mb-2">Ad Text *</label>
+                    <textarea name="text_body" id="text_body" rows="4" maxlength="150"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                        placeholder="Your compelling ad text (max 150 characters)">{{ old('text_body') }}</textarea>
+                    <p class="text-xs text-gray-500 mt-1">150 characters maximum</p>
+                    @error('text_body')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="text_url" class="block text-sm font-medium text-gray-700 mb-2">Destination URL *</label>
+                    <input type="url" name="text_url" id="text_url" value="{{ old('text_url') }}"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                        placeholder="https://yourwebsite.com/landing-page">
+                    @error('text_url')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="text_cta" class="block text-sm font-medium text-gray-700 mb-2">Call-to-Action Button Text</label>
+                    <input type="text" name="text_cta" id="text_cta" value="{{ old('text_cta', 'Learn More') }}" maxlength="20"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                        placeholder="e.g., Buy Now, Learn More, Shop Today">
+                    <p class="text-xs text-gray-500 mt-1">20 characters maximum</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Ad Fields -->
+        <div id="video-fields" class="bg-white rounded-xl shadow-lg p-6 hidden">
+            <h2 class="text-xl font-bold mb-4">Video Ad Content</h2>
+            <div class="space-y-4">
+                <div>
+                    <label for="video_file" class="block text-sm font-medium text-gray-700 mb-2">Video File *</label>
+                    <p class="text-sm text-gray-500 mb-2">Supported formats: MP4, WebM, OGG. Max size: 50MB. Recommended: 16:9 aspect ratio</p>
+                    <input type="file" name="video_file" id="video_file" accept="video/*"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+                    @error('video_file')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="video_thumbnail" class="block text-sm font-medium text-gray-700 mb-2">Video Thumbnail *</label>
+                    <p class="text-sm text-gray-500 mb-2">Upload a preview image (JPG, PNG)</p>
+                    <input type="file" name="video_thumbnail" id="video_thumbnail" accept="image/*"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+                    @error('video_thumbnail')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="video_url" class="block text-sm font-medium text-gray-700 mb-2">Video URL (Alternative)</label>
+                    <p class="text-sm text-gray-500 mb-2">If you prefer to host the video externally (YouTube, Vimeo, etc.)</p>
+                    <input type="url" name="video_url" id="video_url" value="{{ old('video_url') }}"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                        placeholder="https://youtube.com/watch?v=...">
+                    @error('video_url')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="video_destination_url" class="block text-sm font-medium text-gray-700 mb-2">Destination URL *</label>
+                    <input type="url" name="video_destination_url" id="video_destination_url" value="{{ old('video_destination_url') }}"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                        placeholder="https://yourwebsite.com/landing-page">
+                    <p class="text-xs text-gray-500 mt-1">Where users go when they click on the video</p>
+                    @error('video_destination_url')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="video_duration" class="block text-sm font-medium text-gray-700 mb-2">Video Duration (seconds)</label>
+                        <input type="number" name="video_duration" id="video_duration" value="{{ old('video_duration') }}" min="5" max="60"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                            placeholder="30">
+                        <p class="text-xs text-gray-500 mt-1">Recommended: 15-30 seconds</p>
+                    </div>
+
+                    <div class="flex items-center pt-8">
+                        <input type="checkbox" name="video_autoplay" id="video_autoplay" value="1" {{ old('video_autoplay') ? 'checked' : '' }}
+                            class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                        <label for="video_autoplay" class="ml-2 text-sm text-gray-700">
+                            Autoplay video (muted)
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -335,17 +447,28 @@
 function toggleAdTypeFields() {
     const adType = document.querySelector('input[name="ad_type"]:checked').value;
     const bannerFields = document.getElementById('banner-fields');
+    const textFields = document.getElementById('text-fields');
+    const videoFields = document.getElementById('video-fields');
     const classifiedFields = document.getElementById('classified-fields');
     const priceField = document.getElementById('price-field');
 
+    // Hide all sections first
+    bannerFields.classList.add('hidden');
+    textFields.classList.add('hidden');
+    videoFields.classList.add('hidden');
+    classifiedFields.classList.add('hidden');
+    priceField.classList.add('hidden');
+
+    // Show the appropriate section
     if (adType === 'classified') {
         classifiedFields.classList.remove('hidden');
-        bannerFields.classList.add('hidden');
         priceField.classList.remove('hidden');
-    } else {
-        classifiedFields.classList.add('hidden');
+    } else if (adType === 'banner') {
         bannerFields.classList.remove('hidden');
-        priceField.classList.add('hidden');
+    } else if (adType === 'text') {
+        textFields.classList.remove('hidden');
+    } else if (adType === 'video') {
+        videoFields.classList.remove('hidden');
     }
 }
 
