@@ -52,7 +52,7 @@ class PaymentController extends Controller
             'email' => auth()->user()->email,
             'amount' => $amount,
             'reference' => $reference,
-            'callback_url' => route('payment.paystack.callback'),
+            'callback_url' => secure_url(route('payment.paystack.callback', [], false)),
             'metadata' => [
                 'transaction_id' => $transaction->id,
                 'advert_id' => $advert->id,
@@ -188,7 +188,7 @@ class PaymentController extends Controller
             'tx_ref' => $reference,
             'amount' => $plans[$request->plan],
             'currency' => 'NGN',
-            'redirect_url' => route('payment.flutterwave.callback'),
+            'redirect_url' => secure_url(route('payment.flutterwave.callback', [], false)),
             'customer' => [
                 'email' => auth()->user()->email,
                 'name' => auth()->user()->name,

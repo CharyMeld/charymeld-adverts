@@ -18,7 +18,15 @@ return Application::configure(basePath: dirname(__DIR__))
             'publisher' => \App\Http\Middleware\IsPublisher::class,
             'bot.detect' => \App\Http\Middleware\DetectBots::class,
             'fraud.protect' => \App\Http\Middleware\FraudProtection::class,
+            'force.https' => \App\Http\Middleware\ForceHttps::class,
         ]);
+
+        // Apply HTTPS middleware globally in production
+        if (config('app.force_https', false)) {
+            $middleware->web(append: [
+                \App\Http\Middleware\ForceHttps::class,
+            ]);
+        }
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

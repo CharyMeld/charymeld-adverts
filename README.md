@@ -346,6 +346,7 @@ Add to your crontab:
 Comprehensive guides are available:
 
 - **[INSTALLATION.md](INSTALLATION.md)** - Complete setup instructions
+- **[HOSTINGER_DEPLOYMENT.md](HOSTINGER_DEPLOYMENT.md)** - Production deployment with HTTPS
 - **[FRAUD_PROTECTION_GUIDE.md](FRAUD_PROTECTION_GUIDE.md)** - Security features & configuration
 - **[VERIFICATION_SYSTEM_GUIDE.md](VERIFICATION_SYSTEM_GUIDE.md)** - KYC/NIN verification guide
 - **[PAYMENT_SETUP_GUIDE.md](PAYMENT_SETUP_GUIDE.md)** - Payment gateway integration
