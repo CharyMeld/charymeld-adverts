@@ -22,7 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         // Apply HTTPS middleware globally in production
-        if (config('app.force_https', false)) {
+        if (env('APP_FORCE_HTTPS', false)) {
             $middleware->web(append: [
                 \App\Http\Middleware\ForceHttps::class,
             ]);
