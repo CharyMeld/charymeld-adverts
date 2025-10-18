@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 
 class Advert extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = [
         'user_id',
@@ -125,6 +126,14 @@ class Advert extends Model
     public function dailyStats()
     {
         return $this->hasMany(AdDailyStat::class, 'advert_id');
+    }
+
+    /**
+     * Get analytics records
+     */
+    public function analytics()
+    {
+        return $this->hasMany(AdvertAnalytic::class, 'advert_id');
     }
 
     /**
@@ -248,5 +257,25 @@ class Advert extends Model
         }
 
         return true;
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'location' => $this->location,
+            'category_id' => $this->category_id,
+            'category_name' => $this->category?->name,
+            'price' => $this->price,
+            'status' => $this->status,
+            'plan' => $this->plan,
+            'ad_type' => $this->ad_type,
+            'is_active' => $this->is_active,
+        ];
     }
 }

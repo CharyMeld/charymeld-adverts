@@ -84,11 +84,14 @@ class AIAssistantService
                 'support_requested_at' => now(),
             ]);
 
-            // Create admin notification only if this is the first request
+            // Create admin notification - handle both authenticated and guest users
+            $userId = $conversation->user_id;
+            $userName = $conversation->user ? $conversation->user->name : 'Guest User';
+
             \App\Models\AdminNotification::createSupportRequest(
                 $conversation->id,
-                $conversation->user_id,
-                $conversation->user->name
+                $userId,
+                $userName
             );
 
             return "✅ **Support Request Received!**\n\n" .

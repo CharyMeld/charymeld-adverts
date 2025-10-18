@@ -1,0 +1,77 @@
+# Robots.txt for CharyMeld Adverts
+# Updated: 2025-10-18
+
+User-agent: *
+Allow: /
+Allow: /search
+Allow: /category/
+Allow: /advert/
+Allow: /blog/
+Allow: /blogs
+
+# Disallow admin and user areas
+Disallow: /admin/
+Disallow: /advertiser/
+Disallow: /publisher/
+Disallow: /api/
+Disallow: /login
+Disallow: /register
+Disallow: /verification
+Disallow: /dashboard/
+Disallow: /storage/private/
+Disallow: /support-chat/
+Disallow: /assistant/
+
+# Disallow payment pages
+Disallow: /payment/
+
+# Allow public assets
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /storage/
+
+# Sitemap location
+Sitemap: https://charymeld-adverts.com/sitemap.xml
+Sitemap: https://www.charymeld-adverts.com/sitemap.xml
+
+# Crawl delay to prevent server overload
+Crawl-delay: 1
+
+# Google-specific directives
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /verification/
+Disallow: /payment/
+
+# Bing-specific directives
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /verification/
+Disallow: /payment/
+
+# Rate limit aggressive crawlers
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+# Block malicious bots
+User-agent: ia_archiver
+Disallow: /
+
+User-agent: duggmirror
+Disallow: /
+
+User-agent: dotbot
+Disallow: /

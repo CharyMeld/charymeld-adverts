@@ -87,8 +87,15 @@
                             </svg>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <h3 class="font-semibold text-gray-900">{{ $conversation->user->name }}</h3>
-                            <p class="text-sm text-gray-600">{{ $conversation->user->email }}</p>
+                            <h3 class="font-semibold text-gray-900">
+                                {{ $conversation->user ? $conversation->user->name : 'Guest User' }}
+                                @if(!$conversation->user)
+                                    <span class="ml-2 px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">Guest</span>
+                                @endif
+                            </h3>
+                            <p class="text-sm text-gray-600">
+                                {{ $conversation->user ? $conversation->user->email : ($conversation->guest_email ?? 'No email provided') }}
+                            </p>
                             @if($conversation->latestMessage)
                                 <p class="text-sm text-gray-500 mt-1 truncate">{{ Str::limit($conversation->latestMessage->message, 60) }}</p>
                             @endif
@@ -125,7 +132,12 @@
                             </svg>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <h3 class="font-semibold text-gray-900">{{ $conversation->user->name }}</h3>
+                            <h3 class="font-semibold text-gray-900">
+                                {{ $conversation->user ? $conversation->user->name : 'Guest User' }}
+                                @if(!$conversation->user)
+                                    <span class="ml-2 px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">Guest</span>
+                                @endif
+                            </h3>
                             <p class="text-sm text-gray-600">Handled by: <span class="font-medium text-green-600">{{ $conversation->supportAgent->name }}</span></p>
                             @if($conversation->latestMessage)
                                 <p class="text-sm text-gray-500 mt-1 truncate">{{ Str::limit($conversation->latestMessage->message, 60) }}</p>
@@ -160,7 +172,12 @@
                             </svg>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <h3 class="font-semibold text-gray-900">{{ $conversation->user->name }}</h3>
+                            <h3 class="font-semibold text-gray-900">
+                                {{ $conversation->user ? $conversation->user->name : 'Guest User' }}
+                                @if(!$conversation->user)
+                                    <span class="ml-2 px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">Guest</span>
+                                @endif
+                            </h3>
                             <p class="text-sm text-gray-600">Resolved by: <span class="font-medium text-blue-600">{{ $conversation->supportAgent->name ?? 'N/A' }}</span></p>
                             <p class="text-xs text-gray-500 mt-1">✅ Resolved {{ $conversation->updated_at->diffForHumans() }}</p>
                         </div>

@@ -19,16 +19,47 @@ use App\Http\Controllers\Admin\TransactionController as AdminTransactionControll
 // Public Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/search', [HomeController::class, 'search'])->name('search');
+Route::get('/api/search/instant', [App\Http\Controllers\SearchController::class, 'instant'])->name('search.instant');
+Route::post('/api/analytics/contact-click', [App\Http\Controllers\Api\AnalyticsController::class, 'trackContactClick'])->name('api.analytics.contact-click');
 Route::get('/category/{slug}', [HomeController::class, 'category'])->name('category.show');
 Route::get('/advert/{slug}', [HomeController::class, 'show'])->name('advert.show');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [HomeController::class, 'contactSubmit'])->middleware('bot.detect')->name('contact.submit');
 Route::get('/terms', [HomeController::class, 'terms'])->name('terms');
+Route::get('/privacy', [HomeController::class, 'privacy'])->name('privacy');
+Route::get('/data-deletion', [HomeController::class, 'dataDeletion'])->name('data-deletion');
+
+// Partner & Press Routes
+Route::get('/partners', [App\Http\Controllers\PartnerController::class, 'index'])->name('partners');
+Route::post('/partners/submit', [App\Http\Controllers\PartnerController::class, 'submit'])->middleware('bot.detect')->name('partners.submit');
+Route::get('/press', [App\Http\Controllers\PartnerController::class, 'press'])->name('press');
+
+// Referral System Routes (Protected)
+Route::middleware('auth')->group(function () {
+    Route::get('/referrals', [App\Http\Controllers\PartnerController::class, 'referralDashboard'])->name('referrals.dashboard');
+    Route::post('/referrals/generate', [App\Http\Controllers\PartnerController::class, 'generateReferralLink'])->name('referrals.generate');
+});
+
+// SEO Routes
+Route::get('/sitemap.xml', [App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
+Route::get('/generate-sitemap', [App\Http\Controllers\SitemapController::class, 'generate'])->name('sitemap.generate');
 
 // Blog Routes
 Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
+Route::get('/blog/category/{slug}', [BlogController::class, 'category'])->name('blog.category');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+Route::post('/blog/{blog}/comment', [App\Http\Controllers\BlogCommentController::class, 'store'])->middleware(['bot.detect', 'throttle:5,1'])->name('blog.comment.store');
+
+// RSS Feed Routes
+Route::get('/rss/blog', [App\Http\Controllers\RssFeedController::class, 'blog'])->name('rss.blog');
+Route::get('/rss/blog/category/{slug}', [App\Http\Controllers\RssFeedController::class, 'category'])->name('rss.blog.category');
+
+// Newsletter Routes
+Route::post('/newsletter/subscribe', [App\Http\Controllers\NewsletterController::class, 'subscribe'])->middleware(['bot.detect', 'throttle:5,10'])->name('newsletter.subscribe');
+Route::get('/newsletter/verify/{token}', [App\Http\Controllers\NewsletterController::class, 'verify'])->name('newsletter.verify');
+Route::get('/newsletter/unsubscribe/{email}', [App\Http\Controllers\NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
+Route::post('/newsletter/resubscribe', [App\Http\Controllers\NewsletterController::class, 'resubscribe'])->middleware(['bot.detect', 'throttle:3,10'])->name('newsletter.resubscribe');
 
 // Authentication Routes (protected from bots)
 Route::middleware(['guest', 'bot.detect'])->group(function () {
@@ -36,6 +67,10 @@ Route::middleware(['guest', 'bot.detect'])->group(function () {
     Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:5,1'); // 5 attempts per minute
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [RegisterController::class, 'register'])->middleware('throttle:3,10'); // 3 attempts per 10 minutes
+
+    // Social Login Routes
+    Route::get('/auth/{provider}', [App\Http\Controllers\Auth\SocialLoginController::class, 'redirect'])->name('social.redirect');
+    Route::get('/auth/{provider}/callback', [App\Http\Controllers\Auth\SocialLoginController::class, 'callback'])->name('social.callback');
 
     // Password Reset Routes (rate limited)
     Route::get('/forgot-password', [App\Http\Controllers\Auth\PasswordResetController::class, 'showLinkRequestForm'])->name('password.request');
@@ -187,6 +222,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::put('/blogs/{blog}', [AdminBlogController::class, 'update'])->middleware(['bot.detect', 'throttle:10,1'])->name('blogs.update');
     Route::delete('/blogs/{blog}', [AdminBlogController::class, 'destroy'])->middleware('throttle:5,1')->name('blogs.destroy');
 
+    // Blog Categories Management
+    Route::get('/blog-categories', [App\Http\Controllers\Admin\BlogCategoryController::class, 'index'])->name('blog-categories.index');
+    Route::get('/blog-categories/create', [App\Http\Controllers\Admin\BlogCategoryController::class, 'create'])->name('blog-categories.create');
+    Route::post('/blog-categories', [App\Http\Controllers\Admin\BlogCategoryController::class, 'store'])->middleware(['bot.detect', 'throttle:10,1'])->name('blog-categories.store');
+    Route::get('/blog-categories/{blogCategory}/edit', [App\Http\Controllers\Admin\BlogCategoryController::class, 'edit'])->name('blog-categories.edit');
+    Route::put('/blog-categories/{blogCategory}', [App\Http\Controllers\Admin\BlogCategoryController::class, 'update'])->middleware(['bot.detect', 'throttle:10,1'])->name('blog-categories.update');
+    Route::delete('/blog-categories/{blogCategory}', [App\Http\Controllers\Admin\BlogCategoryController::class, 'destroy'])->middleware('throttle:5,1')->name('blog-categories.destroy');
+    Route::post('/blog-categories/{blogCategory}/toggle-status', [App\Http\Controllers\Admin\BlogCategoryController::class, 'toggleStatus'])->middleware('throttle:10,1')->name('blog-categories.toggle-status');
+
+    // Blog Comments Moderation
+    Route::get('/blog-comments', [App\Http\Controllers\BlogCommentController::class, 'index'])->name('blog-comments.index');
+    Route::post('/blog-comments/{comment}/approve', [App\Http\Controllers\BlogCommentController::class, 'approve'])->middleware('throttle:20,1')->name('blog-comments.approve');
+    Route::post('/blog-comments/{comment}/reject', [App\Http\Controllers\BlogCommentController::class, 'reject'])->middleware('throttle:20,1')->name('blog-comments.reject');
+    Route::delete('/blog-comments/{comment}', [App\Http\Controllers\BlogCommentController::class, 'destroy'])->middleware('throttle:10,1')->name('blog-comments.destroy');
+
     // Transactions
     Route::get('/transactions', [AdminTransactionController::class, 'index'])->name('transactions.index');
     Route::get('/transactions/{transaction}', [AdminTransactionController::class, 'show'])->name('transactions.show');
@@ -212,8 +262,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('/verifications/{verification}/reject', [App\Http\Controllers\VerificationController::class, 'reject'])->middleware('throttle:10,1')->name('verifications.reject');
 });
 
-// Chatbot Routes
-Route::prefix('assistant')->name('chatbot.')->middleware('auth')->group(function () {
+// Chatbot Routes - Accessible to all users (guests and authenticated)
+Route::prefix('assistant')->name('chatbot.')->group(function () {
     Route::get('/', [App\Http\Controllers\ChatbotController::class, 'index'])->name('index');
     Route::post('/conversations', [App\Http\Controllers\ChatbotController::class, 'store'])->middleware('throttle:10,1')->name('store'); // 10 new conversations per minute
     Route::get('/conversations/{conversation}', [App\Http\Controllers\ChatbotController::class, 'show'])->name('show');

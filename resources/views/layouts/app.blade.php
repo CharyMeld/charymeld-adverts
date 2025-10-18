@@ -4,56 +4,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- SEO Meta Tags -->
     <title>{{ $title ?? config('app.name', 'CharyMeld Adverts') }}</title>
+
+    <!-- Search Engine Verification -->
+    <meta name="google-site-verification" content="{{ config('seo.google_verification') }}" />
+    <meta name="msvalidate.01" content="{{ config('seo.bing_verification') }}" />
+
+    <!-- PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CharyMeld">
+    <meta name="theme-color" content="#3B82F6">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/images/icons/icon-192x192.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="{{ asset('js/theme-toggle.js') }}"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+
+    <!-- Analytics & Tracking -->
+    @include('components.analytics')
 </head>
 <body class="bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 min-h-screen transition-colors duration-200">
-    <nav class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg shadow-soft sticky top-0 z-50 border-b border-gray-100 dark:border-gray-700 transition-colors duration-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg shadow-soft sticky top-0 z-50 border-b border-gray-100 dark:border-white/20 transition-colors duration-200">
+        <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20">
-                <div class="flex">
-                    <div class="flex-shrink-0 flex items-center">
-                        <a href="{{ route('home') }}" class="flex items-center space-x-2 group">
-                            <div class="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-800 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                </svg>
-                            </div>
-                            <span class="text-2xl font-extrabold">
-                                <span class="bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">CharyMeld</span>
-                                <span class="text-gray-700 dark:text-gray-200">Adverts</span>
-                            </span>
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center mr-8">
+                        <a href="{{ route('home') }}" class="flex items-center group">
+                            <img src="{{ asset('images/logo.png') }}" alt="CharyMeld Adverts" class="h-16 w-auto transform group-hover:scale-105 transition-transform duration-300">
                         </a>
                     </div>
-                    <div class="hidden md:ml-6 md:flex md:space-x-1">
-                        <a href="{{ route('home') }}" class="nav-link inline-flex items-center px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">Home</a>
-                        <a href="{{ route('search') }}" class="nav-link inline-flex items-center px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">Search</a>
-                        <a href="{{ route('blogs.index') }}" class="nav-link inline-flex items-center px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">Blog</a>
-                        <a href="{{ route('about') }}" class="nav-link inline-flex items-center px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">About</a>
-                        <a href="{{ route('contact') }}" class="nav-link inline-flex items-center px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">Contact</a>
-                    </div>
+                    <!-- Public Navigation - Only show when NOT logged in -->
+                    @guest
+                        <div class="hidden md:ml-6 md:flex md:space-x-1">
+                            <a href="{{ route('home') }}" class="nav-link inline-flex items-center px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">{{ __('messages.nav.home') }}</a>
+                            <a href="{{ route('search') }}" class="nav-link inline-flex items-center px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">{{ __('messages.nav.search') }}</a>
+                            <a href="{{ route('blogs.index') }}" class="nav-link inline-flex items-center px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">{{ __('messages.nav.blog') }}</a>
+                            <a href="{{ route('partners') }}" class="nav-link inline-flex items-center px-3 py-2 rounded-lg hover:bg-[#2E6F40]/10 dark:hover:bg-[#2E6F40]/20 text-[#2E6F40] dark:text-[#4CAF50] text-sm font-semibold">
+                                💰 Earn Money
+                            </a>
+                            <a href="{{ route('about') }}" class="nav-link inline-flex items-center px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">{{ __('messages.nav.about') }}</a>
+                            <a href="{{ route('contact') }}" class="nav-link inline-flex items-center px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">{{ __('messages.nav.contact') }}</a>
+                        </div>
+                    @endguest
                 </div>
                 <div class="flex items-center space-x-1">
                     @auth
                         <div class="hidden md:flex md:items-center md:space-x-2">
                             @if(auth()->user()->isAdmin())
-                                <a href="{{ route('admin.dashboard') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">
+                                <!-- Dashboard -->
+                                <a href="{{ route('admin.dashboard') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
                                     Dashboard
                                 </a>
-                                <a href="{{ route('admin.payouts.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">
-                                    Payouts
-                                </a>
-                                <a href="{{ route('admin.support-chat.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">
+
+                                <!-- Content Management Dropdown -->
+                                <div class="relative" x-data="{ open: false }">
+                                    <button @click="open = !open" @click.away="open = false" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm flex items-center">
+                                        Content
+                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </button>
+                                    <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50">
+                                        <a href="{{ route('admin.adverts.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-t-lg">
+                                            📢 Adverts
+                                        </a>
+                                        <a href="{{ route('admin.blogs.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            📝 Blogs
+                                        </a>
+                                        <a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-b-lg">
+                                            📁 Categories
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Users Dropdown -->
+                                <div class="relative" x-data="{ open: false }">
+                                    <button @click="open = !open" @click.away="open = false" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm flex items-center">
+                                        Users
+                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </button>
+                                    <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50">
+                                        <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-t-lg">
+                                            👥 All Users
+                                        </a>
+                                        <a href="{{ route('admin.publishers.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            📰 Publishers
+                                        </a>
+                                        <a href="{{ route('admin.verifications.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-b-lg">
+                                            ✅ Verifications
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Finance Dropdown -->
+                                <div class="relative" x-data="{ open: false }">
+                                    <button @click="open = !open" @click.away="open = false" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm flex items-center">
+                                        Finance
+                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </button>
+                                    <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50">
+                                        <a href="{{ route('admin.transactions.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-t-lg">
+                                            💳 Transactions
+                                        </a>
+                                        <a href="{{ route('admin.payouts.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-b-lg">
+                                            💰 Payouts
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Support -->
+                                <a href="{{ route('admin.support-chat.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
                                     Support
                                 </a>
 
                                 <!-- Admin Notification Bell -->
                                 <div class="relative" id="notificationDropdown">
-                                    <button type="button" onclick="toggleNotifications()" class="relative p-2 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200">
+                                    <button type="button" onclick="toggleNotifications()" class="relative p-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                                         </svg>
@@ -61,13 +146,13 @@
                                     </button>
 
                                     <!-- Notification Dropdown -->
-                                    <div id="notificationPanel" class="hidden absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-50">
-                                        <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                                    <div id="notificationPanel" class="hidden absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50">
+                                        <div class="p-4 border-b border-gray-200 dark:border-white/20 flex items-center justify-between">
                                             <h3 class="font-semibold text-gray-900 dark:text-gray-100">Notifications</h3>
                                             <button onclick="markAllAsRead()" class="text-xs text-primary-600 hover:text-primary-700">Mark all read</button>
                                         </div>
                                         <div id="notificationList" class="max-h-96 overflow-y-auto">
-                                            <div class="p-4 text-center text-gray-500 dark:text-gray-400">
+                                            <div class="p-4 text-center text-gray-500 dark:text-white/90">
                                                 <svg class="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
                                                 </svg>
@@ -77,19 +162,89 @@
                                     </div>
                                 </div>
                             @else
-                                <a href="{{ route('advertiser.dashboard') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">Dashboard</a>
-                                <a href="{{ route('advertiser.analytics.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">Analytics</a>
-
-                                @if(auth()->user()->isPublisher())
-                                    <a href="{{ route('publisher.dashboard') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">Publisher</a>
-                                    <a href="{{ route('publisher.payouts.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-green-50 text-green-600 text-sm">💰 Withdraw</a>
-                                @else
-                                    <a href="{{ route('publisher.register') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-green-50 text-green-600 text-sm">💰 Earn</a>
-                                @endif
-
-                                <a href="{{ route('advertiser.campaigns.create') }}" class="btn btn-primary btn-sm text-sm">
-                                    + Campaign
+                                <!-- Advertiser Dashboard -->
+                                <a href="{{ route('advertiser.dashboard') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
+                                    Dashboard
                                 </a>
+
+                                <!-- Campaigns Dropdown -->
+                                <div class="relative" x-data="{ open: false }">
+                                    <button @click="open = !open" @click.away="open = false" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm flex items-center">
+                                        Campaigns
+                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </button>
+                                    <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50">
+                                        <a href="{{ route('advertiser.adverts.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-t-lg">
+                                            📢 My Adverts
+                                        </a>
+                                        <a href="{{ route('advertiser.campaigns.create') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-b-lg">
+                                            ➕ Create Campaign
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Analytics & Reports -->
+                                <div class="relative" x-data="{ open: false }">
+                                    <button @click="open = !open" @click.away="open = false" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm flex items-center">
+                                        Analytics
+                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </button>
+                                    <div x-show="open" x-transition class="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50">
+                                        <a href="{{ route('advertiser.analytics.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-t-lg">
+                                            📊 Analytics Dashboard
+                                        </a>
+                                        <a href="{{ route('advertiser.reports.all-campaigns.pdf') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            📄 Download PDF Report
+                                        </a>
+                                        <a href="{{ route('advertiser.reports.all-campaigns.csv') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-b-lg">
+                                            📥 Download CSV Report
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Messages -->
+                                <a href="{{ route('advertiser.messages.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
+                                    Messages
+                                </a>
+
+                                <!-- Referrals -->
+                                <a href="{{ route('referrals.dashboard') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
+                                    🔗 Referrals
+                                </a>
+
+                                <!-- Publisher Section (if user is also a publisher) -->
+                                @if(auth()->user()->isPublisher())
+                                    <div class="relative" x-data="{ open: false }">
+                                        <button @click="open = !open" @click.away="open = false" class="nav-link px-3 py-2 rounded-lg hover:bg-green-50 dark:hover:bg-white/20 text-green-600 dark:text-green-400 text-sm flex items-center font-semibold">
+                                            💰 Publisher
+                                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                            </svg>
+                                        </button>
+                                        <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50">
+                                            <a href="{{ route('publisher.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-t-lg">
+                                                🏠 Dashboard
+                                            </a>
+                                            <a href="{{ route('publisher.zones.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                                📍 Ad Zones
+                                            </a>
+                                            <a href="{{ route('publisher.earnings.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                                💵 Earnings
+                                            </a>
+                                            <a href="{{ route('publisher.payouts.index') }}" class="block px-4 py-2 text-sm text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-white/20 rounded-b-lg font-semibold">
+                                                💰 Withdraw
+                                            </a>
+                                        </div>
+                                    </div>
+                                @else
+                                    <a href="{{ route('publisher.register') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-green-50 text-green-600 text-sm font-semibold">
+                                        💰 Become a Publisher
+                                    </a>
+                                @endif
                             @endif
                             <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
@@ -104,7 +259,43 @@
                     @endauth
 
                     <!-- Theme Toggle Button -->
-                    <button type="button" id="theme-toggle" class="inline-flex items-center justify-center p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" title="Toggle theme">
+                    <!-- Language Selector -->
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" @click.away="open = false" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/20 transition-colors duration-200 border border-gray-300 dark:border-gray-600" title="Change language">
+                            @php
+                                $currentLocale = app()->getLocale();
+                                $currentLang = config("app.available_locales.{$currentLocale}", ['flag' => '🌐', 'native' => 'EN']);
+                            @endphp
+                            <span class="text-lg">{{ $currentLang['flag'] }}</span>
+                            <span class="text-sm font-medium hidden sm:inline">{{ $currentLang['native'] }}</span>
+                            <span class="text-sm font-medium sm:hidden">{{ strtoupper($currentLocale) }}</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div x-show="open" x-transition class="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50 py-2">
+                            <div class="px-3 py-2 border-b border-gray-200 dark:border-white/20">
+                                <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Select Language</p>
+                            </div>
+                            @foreach(config('app.available_locales', ['en' => []]) as $locale => $details)
+                                <a href="{{ request()->fullUrlWithQuery(['lang' => $locale]) }}"
+                                   class="flex items-center px-4 py-3 hover:bg-gray-100 dark:hover:bg-white/20 transition-colors {{ app()->getLocale() === $locale ? 'bg-primary-50 dark:bg-white/20/50' : '' }}">
+                                    <span class="text-2xl mr-3">{{ $details['flag'] ?? '🌐' }}</span>
+                                    <div class="flex-1">
+                                        <div class="font-semibold text-gray-900 dark:text-white">{{ $details['native'] ?? strtoupper($locale) }}</div>
+                                        <div class="text-xs text-gray-500 dark:text-white/90">{{ $details['name'] ?? '' }}</div>
+                                    </div>
+                                    @if(app()->getLocale() === $locale)
+                                        <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                    @endif
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <button type="button" id="theme-toggle" class="inline-flex items-center justify-center p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/20 transition-colors duration-200" title="Toggle theme">
                         <svg class="moon-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
                         </svg>
@@ -113,7 +304,7 @@
                         </svg>
                     </button>
 
-                    <button type="button" onclick="toggleMobileMenu()" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-300 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <button type="button" onclick="toggleMobileMenu()" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-300 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-white/20">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -125,12 +316,16 @@
             <div class="pt-2 pb-3 space-y-1">
                 <a href="{{ route('home') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">Home</a>
                 <a href="{{ route('search') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">Search Ads</a>
+                @guest
+                    <a href="{{ route('partners') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-[#2E6F40] hover:bg-[#2E6F40]/10 font-semibold">💰 Earn Money - Join Referral Program</a>
+                @endguest
                 @auth
                     @if(auth()->user()->isAdmin())
                         <a href="{{ route('admin.dashboard') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">Admin Panel</a>
                         <a href="{{ route('admin.publishers.index') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">Publishers</a>
                     @else
                         <a href="{{ route('advertiser.dashboard') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">Dashboard</a>
+                        <a href="{{ route('referrals.dashboard') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">🔗 Referrals</a>
                         @if(auth()->user()->isPublisher())
                             <a href="{{ route('publisher.dashboard') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">Publisher Dashboard</a>
                         @else
@@ -184,16 +379,15 @@
     </main>
 
     <!-- Floating Chatbot Widget -->
-    @auth
-        <div id="chatbot-widget" class="fixed bottom-6 right-6 z-[9999]">
+    <div id="chatbot-widget" class="fixed bottom-6 right-6 z-[9999]">
             <!-- Chat Window (Hidden by default) -->
             <div id="chat-window" class="hidden absolute bottom-20 right-0 w-96 h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200">
                 <!-- Chat Header -->
-                <div class="bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white p-5 flex items-center justify-between shadow-lg">
+                <div class="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white p-5 flex items-center justify-between shadow-lg">
                     <div class="flex items-center space-x-3">
                         <div class="relative">
                             <div class="w-11 h-11 bg-white rounded-full flex items-center justify-center shadow-md">
-                                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
                                 </svg>
                             </div>
@@ -287,7 +481,7 @@
 
             <!-- Chat Button -->
             <button onclick="toggleChatWindow()" id="chat-button"
-                    class="relative w-16 h-16 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 hover:from-primary-700 hover:via-primary-800 hover:to-primary-900 text-white rounded-full shadow-2xl hover:shadow-primary-500/50 flex items-center justify-center transform hover:scale-110 transition-all duration-300 group">
+                    class="relative w-16 h-16 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 text-white rounded-full shadow-2xl hover:shadow-blue-500/50 flex items-center justify-center transform hover:scale-110 transition-all duration-300 group">
                 <svg class="w-8 h-8 group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
                 </svg>
@@ -341,8 +535,24 @@
                 .then(data => {
                     if (data.success && data.conversation_id) {
                         conversationId = data.conversation_id;
-                        // Start polling for new messages only after conversation is created
-                        startMessagePolling();
+
+                        // Get existing messages to set lastMessageId correctly
+                        fetch(`/assistant/conversations/${conversationId}/messages`, {
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json',
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(msgData => {
+                            if (msgData.success && msgData.messages && msgData.messages.length > 0) {
+                                // Set lastMessageId to the highest ID in existing messages
+                                lastMessageId = Math.max(...msgData.messages.map(m => m.id));
+                                console.log('Set lastMessageId to:', lastMessageId);
+                            }
+                            // Start polling for new messages only after conversation is created
+                            startMessagePolling();
+                        });
                     }
                 })
                 .catch(error => {
@@ -367,10 +577,25 @@
                         if (data.success && data.conversation_id) {
                             conversationId = data.conversation_id;
                             console.log('Conversation created, ID:', conversationId);
-                            // Start polling
-                            startMessagePolling();
-                            // Now send the message directly
-                            sendMessageToServer(message);
+
+                            // Get existing messages to set lastMessageId correctly
+                            fetch(`/assistant/conversations/${conversationId}/messages`, {
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Accept': 'application/json',
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(msgData => {
+                                if (msgData.success && msgData.messages && msgData.messages.length > 0) {
+                                    lastMessageId = Math.max(...msgData.messages.map(m => m.id));
+                                    console.log('Set lastMessageId to:', lastMessageId);
+                                }
+                                // Start polling
+                                startMessagePolling();
+                                // Now send the message directly
+                                sendMessageToServer(message);
+                            });
                         }
                     })
                     .catch(error => {
@@ -454,14 +679,53 @@
                     return;
                 }
 
+                // Clear input
+                input.value = '';
+
                 if (!conversationId) {
                     console.warn('No conversation ID, creating conversation first...');
-                    createConversation();
+                    // Create conversation and then send the message
+                    fetch('{{ route('chatbot.store') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({ personality: 'helpful' })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success && data.conversation_id) {
+                            conversationId = data.conversation_id;
+                            console.log('Conversation created, ID:', conversationId);
+
+                            // Get existing messages to set lastMessageId correctly
+                            fetch(`/assistant/conversations/${conversationId}/messages`, {
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Accept': 'application/json',
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(msgData => {
+                                if (msgData.success && msgData.messages && msgData.messages.length > 0) {
+                                    lastMessageId = Math.max(...msgData.messages.map(m => m.id));
+                                    console.log('Set lastMessageId to:', lastMessageId);
+                                }
+                                // Start polling
+                                startMessagePolling();
+                                // Now send the message
+                                sendMessageToServer(message);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error creating conversation:', error);
+                    });
                     return;
                 }
 
-                // Clear input and send message
-                input.value = '';
+                // Send message
                 sendMessageToServer(message);
             });
 
@@ -673,68 +937,173 @@
                 }
             }
         </script>
-    @endauth
+    </div>
 
-    <footer class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white mt-20">
+    <!-- Newsletter Section -->
+    <section class="bg-blue-50 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="max-w-3xl mx-auto text-center">
+                <h3 class="text-4xl font-bold mb-4 text-gray-900">📧 Subscribe to Our Newsletter</h3>
+                <p class="text-xl text-gray-700 mb-8">Get weekly updates on top ads, trending categories, and exclusive deals delivered to your inbox!</p>
+
+                <form id="footer-newsletter-form" action="{{ route('newsletter.subscribe') }}" method="POST" class="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+                    @csrf
+                    <input type="hidden" name="source" value="footer">
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        required
+                        class="flex-1 px-6 py-4 rounded-lg text-gray-900 border-2 border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all"
+                    >
+                    <button
+                        type="submit"
+                        class="px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                    >
+                        Subscribe Now
+                    </button>
+                </form>
+
+                <div id="footer-newsletter-message" class="mt-4 text-sm hidden"></div>
+
+                <p class="text-sm text-gray-600 mt-6">
+                    ✓ Weekly curated ads  •  ✓ Exclusive deals  •  ✓ Unsubscribe anytime
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#2E6F40] text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div>
-                    <div class="flex items-center space-x-2 mb-4">
-                        <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-glow">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                            </svg>
-                        </div>
-                        <span class="text-xl font-bold">CharyMeld</span>
+                    <div class="mb-4">
+                        <a href="{{ route('home') }}" class="inline-block">
+                            <img src="{{ asset('images/logo.png') }}" alt="CharyMeld Adverts" class="h-12 w-auto">
+                        </a>
                     </div>
-                    <p class="text-gray-400 leading-relaxed">Your trusted marketplace for buying and selling. Connect with thousands of buyers and sellers.</p>
+                    <p class="text-white/90 leading-relaxed">Your trusted marketplace for buying and selling. Connect with thousands of buyers and sellers.</p>
                     <div class="mt-6 flex space-x-4">
-                        <a href="#" class="w-10 h-10 bg-gray-700 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors duration-300">
+                        <a href="#" class="w-10 h-10 bg-white/20 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors duration-300">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-gray-700 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors duration-300">
+                        <a href="#" class="w-10 h-10 bg-white/20 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors duration-300">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-gray-700 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors duration-300">
+                        <a href="#" class="w-10 h-10 bg-white/20 hover:bg-primary-600 rounded-lg flex items-center justify-center transition-colors duration-300">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
                         </a>
                     </div>
                 </div>
                 <div>
-                    <h4 class="text-lg font-bold mb-6 text-white">Quick Links</h4>
+                    <h4 class="text-lg font-bold mb-6 text-white">{{ __('messages.footer.quick_links') }}</h4>
                     <ul class="space-y-3">
-                        <li><a href="{{ route('about') }}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>About Us</a></li>
-                        <li><a href="{{ route('contact') }}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>Contact</a></li>
-                        <li><a href="{{ route('terms') }}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>Terms & Conditions</a></li>
-                        <li><a href="{{ route('blogs.index') }}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>Blog</a></li>
+                        <li><a href="{{ route('about') }}" class="text-white/90 hover:text-white transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>{{ __('messages.footer.about_us') }}</a></li>
+                        <li><a href="{{ route('contact') }}" class="text-white/90 hover:text-white transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>{{ __('messages.footer.contact') }}</a></li>
+                        <li><a href="{{ route('terms') }}" class="text-white/90 hover:text-white transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>{{ __('messages.footer.terms') }}</a></li>
+                        <li><a href="{{ route('blogs.index') }}" class="text-white/90 hover:text-white transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>{{ __('messages.nav.blog') }}</a></li>
+                        <li><a href="{{ route('partners') }}" class="text-white/90 hover:text-white transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>Partners</a></li>
+                        <li><a href="{{ route('press') }}" class="text-white/90 hover:text-white transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>Press & Media</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-lg font-bold mb-6 text-white">Categories</h4>
+                    <h4 class="text-lg font-bold mb-6 text-white">{{ __('messages.nav.categories') }}</h4>
                     <ul class="space-y-3">
-                        <li><a href="{{ route('search') }}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>Vehicles</a></li>
-                        <li><a href="{{ route('search') }}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>Real Estate</a></li>
-                        <li><a href="{{ route('search') }}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>Electronics</a></li>
-                        <li><a href="{{ route('search') }}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>Jobs</a></li>
+                        <li><a href="{{ route('search') }}" class="text-white/90 hover:text-white transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>{{ __('messages.categories.popular_categories') }}</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-lg font-bold mb-6 text-white">Get Started</h4>
+                    <h4 class="text-lg font-bold mb-6 text-white">💰 Earn Money</h4>
+                    <ul class="space-y-3">
+                        @auth
+                            <li>
+                                <a href="{{ route('referrals.dashboard') }}" class="text-[#4CAF50] hover:text-white transition-colors duration-200 flex items-center font-semibold">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                    Get Your Referral Link
+                                </a>
+                            </li>
+                        @else
+                            <li>
+                                <a href="{{ route('register') }}" class="text-[#4CAF50] hover:text-white transition-colors duration-200 flex items-center font-semibold">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                    Start Earning Today
+                                </a>
+                            </li>
+                        @endauth
+                        <li><a href="{{ route('partners') }}" class="text-white/90 hover:text-white transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>Affiliate Program</a></li>
+                        <li class="text-white/90 text-sm">
+                            ✓ Earn 20% commission<br>
+                            ✓ Monthly payouts<br>
+                            ✓ Real-time tracking
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-6 text-white">{{ __('messages.footer.get_started') }}</h4>
                     <ul class="space-y-3">
                         @guest
-                            <li><a href="{{ route('register') }}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>Create Account</a></li>
-                            <li><a href="{{ route('login') }}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>Login</a></li>
+                            <li><a href="{{ route('register') }}" class="text-white/90 hover:text-white transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>{{ __('messages.footer.create_account') }}</a></li>
+                            <li><a href="{{ route('login') }}" class="text-white/90 hover:text-white transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>{{ __('messages.nav.login') }}</a></li>
                         @endguest
-                        <li><a href="{{ route('search') }}" class="text-gray-400 hover:text-primary-400 transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>Browse Ads</a></li>
+                        <li><a href="{{ route('search') }}" class="text-white/90 hover:text-white transition-colors duration-200 flex items-center"><svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>{{ __('messages.footer.browse_ads') }}</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-gray-700 mt-12 pt-8 text-center">
-                <p class="text-gray-400">&copy; {{ date('Y') }} <span class="text-primary-400 font-semibold">CharyMeld Adverts</span>. All rights reserved.</p>
-                <p class="text-gray-500 text-sm mt-2">Built with ❤️ in Nigeria</p>
+
+            <!-- Copyright -->
+            <div class="border-t border-white/20 mt-12 pt-8 text-center">
+                <p class="text-white/90">&copy; {{ date('Y') }} <span class="text-primary-400 font-semibold">CharyMeld Adverts</span>. {{ __('messages.footer.copyright') }}</p>
+                <p class="text-gray-500 text-sm mt-2">{{ __('messages.footer.built_with_love') }}</p>
             </div>
         </div>
     </footer>
+
+    <script>
+        document.getElementById('footer-newsletter-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const messageDiv = document.getElementById('footer-newsletter-message');
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const emailInput = form.querySelector('input[name="email"]');
+
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Subscribing...';
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: emailInput.value,
+                        source: 'footer'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    messageDiv.className = 'mt-4 text-lg text-white bg-white/20 backdrop-blur-sm rounded-lg py-3 px-6 block';
+                    messageDiv.textContent = '✓ ' + data.message;
+                    emailInput.value = '';
+                } else {
+                    messageDiv.className = 'mt-4 text-lg text-white bg-red-500/80 backdrop-blur-sm rounded-lg py-3 px-6 block';
+                    messageDiv.textContent = '✗ ' + (data.message || 'Subscription failed. Please try again.');
+                }
+            } catch (error) {
+                messageDiv.className = 'mt-4 text-lg text-white bg-red-500/80 backdrop-blur-sm rounded-lg py-3 px-6 block';
+                messageDiv.textContent = '✗ An error occurred. Please try again later.';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Subscribe Now';
+            }
+        });
+    </script>
 
     <!-- Admin Notification System -->
     @if(auth()->check() && auth()->user()->isAdmin())
@@ -773,7 +1142,7 @@
 
                 if (data.notifications.length === 0) {
                     list.innerHTML = `
-                        <div class="p-8 text-center text-gray-500 dark:text-gray-400">
+                        <div class="p-8 text-center text-gray-500 dark:text-white/90">
                             <svg class="w-16 h-16 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
@@ -786,17 +1155,17 @@
 
                 list.innerHTML = data.notifications.map(notif => `
                     <div onclick="handleNotificationClick(${notif.id}, '${notif.action_url}')"
-                         class="p-4 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors ${!notif.is_read ? 'bg-primary-50 dark:bg-primary-900/20' : ''}">
+                         class="p-4 border-b border-gray-200 dark:border-white/20 hover:bg-gray-50 dark:hover:bg-white/20 cursor-pointer transition-colors ${!notif.is_read ? 'bg-primary-50 dark:bg-primary-900/20' : ''}">
                         <div class="flex items-start space-x-3">
                             <div class="flex-shrink-0">
                                 ${notif.type === 'support_request' ?
-                                    '<svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>' :
+                                    '<svg class="w-6 h-6 text-[#2E6F40]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>' :
                                     '<svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
                                 }
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">${notif.title}</p>
-                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">${notif.message}</p>
+                                <p class="text-sm text-white/90 mt-1">${notif.message}</p>
                                 <p class="text-xs text-gray-500 dark:text-gray-500 mt-2">${formatTime(notif.created_at)}</p>
                             </div>
                             ${!notif.is_read ? '<div class="flex-shrink-0"><span class="w-2 h-2 bg-primary-600 rounded-full inline-block"></span></div>' : ''}
@@ -886,5 +1255,205 @@
         updateNotificationCount();
     </script>
     @endif
+
+    <!-- PWA Service Worker Registration & Install Prompt -->
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('ServiceWorker registered:', registration);
+
+                        // Check for updates every hour
+                        setInterval(() => {
+                            registration.update();
+                        }, 60 * 60 * 1000);
+                    })
+                    .catch((error) => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        const installButton = document.getElementById('pwa-install-button');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent default install prompt
+            e.preventDefault();
+            // Store the event for later use
+            deferredPrompt = e;
+
+            // Show custom install button
+            if (installButton) {
+                installButton.style.display = 'block';
+            }
+
+            // Show a custom install banner (optional)
+            showInstallBanner();
+        });
+
+        // Function to show custom install banner
+        function showInstallBanner() {
+            // Check if banner was dismissed before
+            if (localStorage.getItem('pwa-install-dismissed')) {
+                return;
+            }
+
+            // Create and show install banner
+            const banner = document.createElement('div');
+            banner.id = 'pwa-install-banner';
+            banner.innerHTML = `
+                <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px 24px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); z-index: 9999; max-width: 90%; width: 400px; font-family: Inter, sans-serif;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="flex-shrink: 0;">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                                <rect width="40" height="40" rx="8" fill="white" fill-opacity="0.2"/>
+                                <path d="M20 12v16M12 20h16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600;">Install CharyMeld Adverts</h3>
+                            <p style="margin: 0; font-size: 13px; opacity: 0.9;">Install our app for a faster experience and offline access</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 16px;">
+                        <button onclick="installPWA()" style="flex: 1; background: white; color: #667eea; border: none; padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px;">Install</button>
+                        <button onclick="dismissInstallBanner()" style="background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 16px; border-radius: 6px; font-weight: 500; cursor: pointer; font-size: 14px;">Not Now</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(banner);
+        }
+
+        // Install PWA function
+        window.installPWA = function() {
+            if (!deferredPrompt) {
+                return;
+            }
+
+            // Hide the banner
+            const banner = document.getElementById('pwa-install-banner');
+            if (banner) {
+                banner.remove();
+            }
+
+            // Show the install prompt
+            deferredPrompt.prompt();
+
+            // Wait for the user's response
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                } else {
+                    console.log('User dismissed the install prompt');
+                }
+                deferredPrompt = null;
+            });
+        };
+
+        // Dismiss install banner
+        window.dismissInstallBanner = function() {
+            const banner = document.getElementById('pwa-install-banner');
+            if (banner) {
+                banner.remove();
+            }
+            // Remember dismissal for 7 days
+            localStorage.setItem('pwa-install-dismissed', Date.now() + (7 * 24 * 60 * 60 * 1000));
+        };
+
+        // Clear dismissal after 7 days
+        const dismissedUntil = localStorage.getItem('pwa-install-dismissed');
+        if (dismissedUntil && Date.now() > parseInt(dismissedUntil)) {
+            localStorage.removeItem('pwa-install-dismissed');
+        }
+
+        // Handle successful installation
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            // Hide install button
+            if (installButton) {
+                installButton.style.display = 'none';
+            }
+            // Remove banner if exists
+            const banner = document.getElementById('pwa-install-banner');
+            if (banner) {
+                banner.remove();
+            }
+        });
+
+        // Request notification permission (optional)
+        window.requestNotificationPermission = function() {
+            if ('Notification' in window && 'serviceWorker' in navigator) {
+                Notification.requestPermission().then((permission) => {
+                    console.log('Notification permission:', permission);
+                    if (permission === 'granted') {
+                        console.log('Notification permission granted');
+                        // Subscribe to push notifications
+                        subscribeToPushNotifications();
+                    }
+                });
+            }
+        };
+
+        // Subscribe to push notifications
+        function subscribeToPushNotifications() {
+            navigator.serviceWorker.ready.then((registration) => {
+                // Check if already subscribed
+                registration.pushManager.getSubscription().then((subscription) => {
+                    if (subscription) {
+                        console.log('Already subscribed to push notifications');
+                        return;
+                    }
+
+                    // Subscribe to push notifications
+                    const vapidPublicKey = '{{ config('services.vapid.public_key', '') }}';
+                    if (!vapidPublicKey) {
+                        console.log('VAPID public key not configured');
+                        return;
+                    }
+
+                    const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+
+                    registration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: convertedVapidKey
+                    }).then((subscription) => {
+                        console.log('Subscribed to push notifications:', subscription);
+
+                        // Send subscription to server
+                        fetch('/api/push-subscribe', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify(subscription)
+                        });
+                    }).catch((error) => {
+                        console.error('Failed to subscribe to push notifications:', error);
+                    });
+                });
+            });
+        }
+
+        // Helper function to convert VAPID key
+        function urlBase64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding)
+                .replace(/\-/g, '+')
+                .replace(/_/g, '/');
+
+            const rawData = window.atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray;
+        }
+    </script>
 </body>
 </html>

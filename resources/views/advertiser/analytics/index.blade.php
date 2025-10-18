@@ -90,11 +90,12 @@
         <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white shadow-lg">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-orange-100 text-sm font-medium mb-1">Total Spent</p>
-                    <p class="text-4xl font-bold">₦{{ number_format($stats['total_spent'], 2) }}</p>
+                    <p class="text-orange-100 text-sm font-medium mb-1">Contact Clicks</p>
+                    <p class="text-4xl font-bold">{{ number_format($stats['total_contact_clicks']) }}</p>
+                    <p class="text-orange-100 text-xs mt-2">Phone, Email, WhatsApp</p>
                 </div>
                 <svg class="w-12 h-12 text-orange-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                 </svg>
             </div>
         </div>
@@ -108,24 +109,6 @@
         </div>
     </div>
 
-    <!-- Charts Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        <!-- Device Breakdown -->
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <h2 class="text-xl font-bold text-gray-900 mb-6">Device Distribution</h2>
-            <div class="h-64">
-                <canvas id="deviceChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Hourly Performance -->
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <h2 class="text-xl font-bold text-gray-900 mb-6">Hourly Click Pattern</h2>
-            <div class="h-64">
-                <canvas id="hourlyChart"></canvas>
-            </div>
-        </div>
-    </div>
 
     <!-- Top Campaigns & Country Stats -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -140,10 +123,9 @@
                                 {{ $campaign->title }}
                             </a>
                             <div class="flex items-center space-x-4 mt-1">
-                                <span class="text-xs text-gray-500">{{ number_format($campaign->impressions) }} views</span>
-                                <span class="text-xs text-gray-500">{{ number_format($campaign->clicks) }} clicks</span>
-                                <span class="text-xs text-primary-600 font-medium">{{ number_format($campaign->ctr, 2) }}% CTR</span>
-                                <a href="{{ route('advertiser.reports.campaign.pdf', ['advert' => $campaign->id]) }}" class="text-xs text-blue-600 hover:underline">📄 PDF</a>
+                                <span class="text-xs text-gray-500">{{ number_format($campaign->analytics_stats['total_impressions'] ?? 0) }} views</span>
+                                <span class="text-xs text-gray-500">{{ number_format($campaign->analytics_stats['total_clicks'] ?? 0) }} clicks</span>
+                                <span class="text-xs text-primary-600 font-medium">{{ number_format($campaign->analytics_stats['ctr'] ?? 0, 2) }}% CTR</span>
                             </div>
                         </div>
                         <div class="text-right">
@@ -160,25 +142,29 @@
             </div>
         </div>
 
-        <!-- Country Distribution -->
+        <!-- All Campaigns List -->
         <div class="bg-white rounded-xl shadow-lg p-6">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">Top Countries</h2>
+            <h2 class="text-xl font-bold text-gray-900 mb-4">All Campaigns</h2>
             <div class="space-y-3">
-                @forelse($countryStats as $country)
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <span class="text-2xl">{{ $country->country_code === 'NG' ? '🇳🇬' : ($country->country_code === 'GH' ? '🇬🇭' : ($country->country_code === 'US' ? '🇺🇸' : '🌍')) }}</span>
-                            <span class="font-medium text-gray-900">{{ $country->country_code ?? 'Unknown' }}</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="text-gray-600">{{ number_format($country->count) }}</span>
-                            <div class="w-32 bg-gray-200 rounded-full h-2">
-                                <div class="bg-primary-600 h-2 rounded-full" style="width: {{ ($country->count / $countryStats->max('count')) * 100 }}%"></div>
+                @forelse($adverts as $advert)
+                    @php
+                        $advertStats = \App\Models\AdvertAnalytic::getStats($advert->id, $startDate, $endDate);
+                    @endphp
+                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                        <div class="flex-1">
+                            <a href="{{ route('advertiser.analytics.campaign', $advert) }}" class="text-sm font-medium text-gray-900 hover:text-primary-600">
+                                {{ $advert->title }}
+                            </a>
+                            <div class="flex items-center space-x-3 mt-1">
+                                <span class="text-xs text-gray-500">👁️ {{ number_format($advertStats['total_impressions']) }}</span>
+                                <span class="text-xs text-gray-500">🖱️ {{ number_format($advertStats['total_clicks']) }}</span>
+                                <span class="text-xs text-primary-600">{{ number_format($advertStats['ctr'], 2) }}% CTR</span>
                             </div>
                         </div>
+                        <a href="{{ route('advertiser.analytics.campaign', $advert) }}" class="text-xs text-blue-600 hover:underline">View Details →</a>
                     </div>
                 @empty
-                    <p class="text-gray-500 text-center py-8">No data available</p>
+                    <p class="text-gray-500 text-center py-8">No campaigns yet</p>
                 @endforelse
             </div>
         </div>
@@ -206,6 +192,12 @@ new Chart(performanceCtx, {
             borderColor: 'rgb(34, 197, 94)',
             backgroundColor: 'rgba(34, 197, 94, 0.1)',
             tension: 0.4
+        }, {
+            label: 'Contact Clicks',
+            data: {!! json_encode($dailyStats->pluck('contact_clicks')) !!},
+            borderColor: 'rgb(251, 146, 60)',
+            backgroundColor: 'rgba(251, 146, 60, 0.1)',
+            tension: 0.4
         }]
     },
     options: {
@@ -214,60 +206,6 @@ new Chart(performanceCtx, {
         plugins: {
             legend: {
                 position: 'top',
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
-});
-
-// Device Chart
-const deviceCtx = document.getElementById('deviceChart').getContext('2d');
-new Chart(deviceCtx, {
-    type: 'doughnut',
-    data: {
-        labels: {!! json_encode($deviceStats->pluck('device_type')->map(fn($d) => ucfirst($d ?? 'Unknown'))) !!},
-        datasets: [{
-            data: {!! json_encode($deviceStats->pluck('count')) !!},
-            backgroundColor: [
-                'rgb(59, 130, 246)',
-                'rgb(34, 197, 94)',
-                'rgb(251, 146, 60)'
-            ]
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'bottom'
-            }
-        }
-    }
-});
-
-// Hourly Chart
-const hourlyCtx = document.getElementById('hourlyChart').getContext('2d');
-new Chart(hourlyCtx, {
-    type: 'bar',
-    data: {
-        labels: {!! json_encode($hourlyStats->pluck('hour')->map(fn($h) => $h . ':00')) !!},
-        datasets: [{
-            label: 'Clicks',
-            data: {!! json_encode($hourlyStats->pluck('count')) !!},
-            backgroundColor: 'rgb(34, 197, 94)',
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false
             }
         },
         scales: {

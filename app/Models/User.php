@@ -6,10 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Scout\Searchable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -26,6 +27,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'address',
         'avatar',
         'is_active',
+        'google_id',
+        'facebook_id',
+        'twitter_id',
     ];
 
     /**
@@ -109,6 +113,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(UserVerification::class);
     }
 
+    public function referrals()
+    {
+        return $this->hasMany(Referral::class, 'referrer_id');
+    }
+
+    public function referredBy()
+    {
+        return $this->hasOne(Referral::class, 'referred_id');
+    }
+
     /**
      * Check if user has submitted verification
      */
@@ -131,5 +145,19 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasVerificationPending(): bool
     {
         return $this->hasVerification() && $this->verification->verification_status === 'pending';
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'role' => $this->role,
+            'user_type' => $this->user_type,
+        ];
     }
 }

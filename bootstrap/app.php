@@ -9,8 +9,13 @@ return Application::configure(basePath: dirname(__DIR__))
         web: __DIR__.'/../routes/web.php',
         api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
+        channels: __DIR__.'/../routes/channels.php',
         health: '/up',
     )
+    ->withProviders([
+        App\Providers\AppServiceProvider::class,
+        App\Providers\MeilisearchServiceProvider::class,
+    ])
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'admin' => \App\Http\Middleware\IsAdmin::class,
@@ -19,6 +24,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'bot.detect' => \App\Http\Middleware\DetectBots::class,
             'fraud.protect' => \App\Http\Middleware\FraudProtection::class,
             'force.https' => \App\Http\Middleware\ForceHttps::class,
+            'locale' => \App\Http\Middleware\SetLocale::class,
+        ]);
+
+        // Apply global web middleware
+        $middleware->web(append: [
+            \App\Http\Middleware\SetLocale::class,
         ]);
 
         // Apply HTTPS middleware globally in production

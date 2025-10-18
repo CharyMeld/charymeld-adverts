@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Mail;
+
+use App\Models\NewsletterSubscriber;
+use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Queue\SerializesModels;
+
+class NewsletterVerification extends Mailable
+{
+    use Queueable, SerializesModels;
+
+    public $subscriber;
+    public $verificationUrl;
+
+    /**
+     * Create a new message instance.
+     */
+    public function __construct(NewsletterSubscriber $subscriber)
+    {
+        $this->subscriber = $subscriber;
+        $this->verificationUrl = route('newsletter.verify', $subscriber->verification_token);
+    }
+
+    /**
+     * Get the message envelope.
+     */
+    public function envelope(): Envelope
+    {
+        return new Envelope(
+            subject: 'Verify Your Newsletter Subscription - CharyMeld Adverts',
+        );
+    }
+
+    /**
+     * Get the message content definition.
+     */
+    public function content(): Content
+    {
+        return new Content(
+            view: 'emails.newsletter.verification',
+        );
+    }
+
+    /**
+     * Get the attachments for the message.
+     *
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     */
+    public function attachments(): array
+    {
+        return [];
+    }
+}

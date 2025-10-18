@@ -11,8 +11,21 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::with('parent')->latest()->paginate(20);
-        return view('admin.categories.index', compact('categories'));
+        // Get all categories with parent and children relationships, ordered by parent first
+        $categories = Category::with(['parent', 'children', 'adverts'])
+            ->whereNull('parent_id')
+            ->orderBy('name')
+            ->get();
+
+        // Get statistics
+        $stats = [
+            'total' => Category::count(),
+            'parents' => Category::whereNull('parent_id')->count(),
+            'subcategories' => Category::whereNotNull('parent_id')->count(),
+            'active' => Category::where('is_active', true)->count(),
+        ];
+
+        return view('admin.categories.index', compact('categories', 'stats'));
     }
 
     public function create()

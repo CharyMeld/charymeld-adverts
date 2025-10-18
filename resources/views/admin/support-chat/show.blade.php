@@ -21,8 +21,15 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                         </svg>
                     </div>
-                    <h3 class="font-bold text-lg text-gray-900">{{ $conversation->user->name }}</h3>
-                    <p class="text-sm text-gray-600">{{ $conversation->user->email }}</p>
+                    <h3 class="font-bold text-lg text-gray-900">
+                        {{ $conversation->user ? $conversation->user->name : 'Guest User' }}
+                        @if(!$conversation->user)
+                            <span class="ml-2 px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">Guest</span>
+                        @endif
+                    </h3>
+                    <p class="text-sm text-gray-600">
+                        {{ $conversation->user ? $conversation->user->email : ($conversation->guest_email ?? 'No email provided') }}
+                    </p>
                 </div>
 
                 <div class="space-y-3 border-t border-gray-200 pt-4">
@@ -82,7 +89,9 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="font-bold text-lg">Support Chat with {{ $conversation->user->name }}</h3>
+                            <h3 class="font-bold text-lg">
+                                Support Chat with {{ $conversation->user ? $conversation->user->name : 'Guest User' }}
+                            </h3>
                             <p class="text-xs text-primary-100">Conversation ID: #{{ $conversation->id }}</p>
                         </div>
                     </div>

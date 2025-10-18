@@ -19,10 +19,19 @@ class ChatbotController extends Controller
 
     public function index()
     {
-        $conversations = auth()->user()->hasMany(ChatConversation::class, 'user_id')
-            ->with(['latestMessage', 'unreadMessages'])
-            ->orderBy('last_message_at', 'desc')
-            ->get();
+        if (auth()->check()) {
+            $conversations = auth()->user()->hasMany(ChatConversation::class, 'user_id')
+                ->with(['latestMessage', 'unreadMessages'])
+                ->orderBy('last_message_at', 'desc')
+                ->get();
+        } else {
+            // For guests, show conversations from this session
+            $sessionId = session()->getId();
+            $conversations = ChatConversation::where('session_id', $sessionId)
+                ->with(['latestMessage'])
+                ->orderBy('last_message_at', 'desc')
+                ->get();
+        }
 
         $suggestions = $this->aiService->suggestQuestions();
 
@@ -31,20 +40,29 @@ class ChatbotController extends Controller
 
     public function show(ChatConversation $conversation)
     {
-        // Check ownership
-        if ($conversation->user_id !== auth()->id()) {
-            abort(403);
+        // Check ownership for both authenticated and guest users
+        if (auth()->check()) {
+            if ($conversation->user_id !== auth()->id()) {
+                abort(403);
+            }
+        } else {
+            // For guests, check session_id
+            if ($conversation->session_id !== session()->getId()) {
+                abort(403);
+            }
         }
 
         $messages = $conversation->messages()
             ->orderBy('created_at', 'asc')
             ->get();
 
-        // Mark AI messages as read
-        $conversation->unreadMessages()->update([
-            'is_read' => true,
-            'read_at' => now(),
-        ]);
+        // Mark AI messages as read (only for authenticated users)
+        if (auth()->check()) {
+            $conversation->unreadMessages()->update([
+                'is_read' => true,
+                'read_at' => now(),
+            ]);
+        }
 
         $suggestions = $this->aiService->suggestQuestions();
 
@@ -55,14 +73,26 @@ class ChatbotController extends Controller
     {
         $request->validate([
             'personality' => 'nullable|in:helpful,professional,friendly,casual',
+            'guest_email' => 'nullable|email', // Optional email for guests
         ]);
 
-        $conversation = ChatConversation::create([
-            'user_id' => auth()->id(),
+        $conversationData = [
             'title' => 'New Conversation',
             'ai_personality' => $request->personality ?? 'helpful',
             'last_message_at' => now(),
-        ]);
+        ];
+
+        // Add user_id or session_id based on authentication status
+        if (auth()->check()) {
+            $conversationData['user_id'] = auth()->id();
+        } else {
+            $conversationData['session_id'] = session()->getId();
+            if ($request->guest_email) {
+                $conversationData['guest_email'] = $request->guest_email;
+            }
+        }
+
+        $conversation = ChatConversation::create($conversationData);
 
         // Send greeting message
         $greeting = $this->aiService->getGreeting($conversation->ai_personality);
@@ -82,9 +112,15 @@ class ChatbotController extends Controller
 
     public function sendMessage(Request $request, ChatConversation $conversation)
     {
-        // Check ownership
-        if ($conversation->user_id !== auth()->id()) {
-            abort(403);
+        // Check ownership for both authenticated and guest users
+        if (auth()->check()) {
+            if ($conversation->user_id !== auth()->id()) {
+                abort(403);
+            }
+        } else {
+            if ($conversation->session_id !== session()->getId()) {
+                abort(403);
+            }
         }
 
         $request->validate([
@@ -107,13 +143,19 @@ class ChatbotController extends Controller
         }
 
         // Save user message
-        $userMessage = ChatMessage::create([
+        $messageData = [
             'conversation_id' => $conversation->id,
-            'user_id' => auth()->id(),
             'sender_type' => 'user',
             'message' => $request->message,
             'attachments' => !empty($attachments) ? $attachments : null,
-        ]);
+        ];
+
+        // Add user_id only if authenticated
+        if (auth()->check()) {
+            $messageData['user_id'] = auth()->id();
+        }
+
+        $userMessage = ChatMessage::create($messageData);
 
         // Update conversation
         $conversation->update([
@@ -171,9 +213,15 @@ class ChatbotController extends Controller
 
     public function getMessages(ChatConversation $conversation)
     {
-        // Check ownership
-        if ($conversation->user_id !== auth()->id()) {
-            abort(403);
+        // Check ownership for both authenticated and guest users
+        if (auth()->check()) {
+            if ($conversation->user_id !== auth()->id()) {
+                abort(403);
+            }
+        } else {
+            if ($conversation->session_id !== session()->getId()) {
+                abort(403);
+            }
         }
 
         $messages = $conversation->messages()
@@ -192,9 +240,15 @@ class ChatbotController extends Controller
 
     public function updatePersonality(Request $request, ChatConversation $conversation)
     {
-        // Check ownership
-        if ($conversation->user_id !== auth()->id()) {
-            abort(403);
+        // Check ownership for both authenticated and guest users
+        if (auth()->check()) {
+            if ($conversation->user_id !== auth()->id()) {
+                abort(403);
+            }
+        } else {
+            if ($conversation->session_id !== session()->getId()) {
+                abort(403);
+            }
         }
 
         $request->validate([
@@ -213,9 +267,15 @@ class ChatbotController extends Controller
 
     public function destroy(ChatConversation $conversation)
     {
-        // Check ownership
-        if ($conversation->user_id !== auth()->id()) {
-            abort(403);
+        // Check ownership for both authenticated and guest users
+        if (auth()->check()) {
+            if ($conversation->user_id !== auth()->id()) {
+                abort(403);
+            }
+        } else {
+            if ($conversation->session_id !== session()->getId()) {
+                abort(403);
+            }
         }
 
         // Delete attachments

@@ -32,6 +32,26 @@
                 @enderror
             </div>
 
+            <!-- Category -->
+            <div class="mb-6">
+                <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">
+                    Category
+                </label>
+                <select name="category_id" id="category_id"
+                        class="input @error('category_id') border-red-500 @enderror">
+                    <option value="">-- Select Category --</option>
+                    @foreach(\App\Models\BlogCategory::active()->ordered()->get() as $category)
+                        <option value="{{ $category->id }}" {{ old('category_id', $blog->category_id) == $category->id ? 'selected' : '' }}>
+                            @if($category->icon){{ $category->icon }} @endif{{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('category_id')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+                <p class="mt-1 text-xs text-gray-500">Optional. Categorize your blog post.</p>
+            </div>
+
             <!-- Excerpt -->
             <div class="mb-6">
                 <label for="excerpt" class="block text-sm font-medium text-gray-700 mb-2">
@@ -84,6 +104,40 @@
                 <p class="mt-1 text-xs text-gray-500">Optional. Recommended size: 1200x630px</p>
             </div>
 
+            <!-- Tags -->
+            <div class="mb-6">
+                <label for="tags" class="block text-sm font-medium text-gray-700 mb-2">
+                    Tags
+                </label>
+                <input type="text" name="tags" id="tags"
+                       value="{{ old('tags', is_array($blog->tags) ? implode(', ', $blog->tags) : '') }}"
+                       class="input @error('tags') border-red-500 @enderror"
+                       placeholder="laravel, php, web development">
+                @error('tags')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+                <p class="mt-1 text-xs text-gray-500">Optional. Comma-separated tags (e.g., "laravel, php, tutorial").</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="text-xl font-bold text-gray-900 mb-6">SEO Settings</h2>
+
+            <!-- Meta Title -->
+            <div class="mb-6">
+                <label for="meta_title" class="block text-sm font-medium text-gray-700 mb-2">
+                    Meta Title
+                </label>
+                <input type="text" name="meta_title" id="meta_title" value="{{ old('meta_title', $blog->meta_title) }}"
+                       class="input @error('meta_title') border-red-500 @enderror"
+                       placeholder="Leave empty to use post title"
+                       maxlength="60">
+                @error('meta_title')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+                <p class="mt-1 text-xs text-gray-500">Optional. For SEO purposes (50-60 characters recommended).</p>
+            </div>
+
             <!-- Meta Description -->
             <div class="mb-6">
                 <label for="meta_description" class="block text-sm font-medium text-gray-700 mb-2">
@@ -91,12 +145,31 @@
                 </label>
                 <textarea name="meta_description" id="meta_description" rows="2"
                           class="input @error('meta_description') border-red-500 @enderror"
-                          placeholder="SEO meta description...">{{ old('meta_description', $blog->meta_description) }}</textarea>
+                          placeholder="SEO meta description..."
+                          maxlength="160">{{ old('meta_description', $blog->meta_description) }}</textarea>
                 @error('meta_description')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
                 <p class="mt-1 text-xs text-gray-500">Optional. For SEO purposes (150-160 characters recommended).</p>
             </div>
+
+            <!-- Meta Keywords -->
+            <div class="mb-6">
+                <label for="meta_keywords" class="block text-sm font-medium text-gray-700 mb-2">
+                    Meta Keywords
+                </label>
+                <input type="text" name="meta_keywords" id="meta_keywords" value="{{ old('meta_keywords', $blog->meta_keywords) }}"
+                       class="input @error('meta_keywords') border-red-500 @enderror"
+                       placeholder="keyword1, keyword2, keyword3">
+                @error('meta_keywords')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+                <p class="mt-1 text-xs text-gray-500">Optional. Comma-separated keywords for SEO.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="text-xl font-bold text-gray-900 mb-6">Publishing</h2>
 
             <!-- Status -->
             <div class="mb-6">

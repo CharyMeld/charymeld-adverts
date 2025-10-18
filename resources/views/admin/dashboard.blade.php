@@ -9,7 +9,7 @@
 
     <!-- Stats Overview -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="card bg-blue-50 border-l-4 border-blue-500">
+        <div class="card bg-green-50 border-l-4 border-[#2E6F40]">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
                     <span class="text-4xl">👥</span>
@@ -62,12 +62,70 @@
         </div>
     </div>
 
+    <!-- Referral Program Stats -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">🔗 Referral Program Stats</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="card bg-purple-50 border-l-4 border-purple-500">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-4xl">👥</span>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Referrals</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ $stats['total_referrals'] }}</p>
+                        <p class="text-xs text-purple-600">{{ $stats['active_referrals'] }} active</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-green-50 border-l-4 border-[#2E6F40]">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-4xl">👆</span>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Clicks</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ $stats['total_referral_clicks'] }}</p>
+                        <p class="text-xs text-gray-500">Referral links clicked</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-green-50 border-l-4 border-green-500">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-4xl">✍️</span>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Signups</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ $stats['total_referral_signups'] }}</p>
+                        <p class="text-xs text-green-600">{{ $stats['completed_referrals'] }} completed</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-yellow-50 border-l-4 border-yellow-500">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-4xl">💰</span>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Commissions</p>
+                        <p class="text-2xl font-bold text-gray-900">₦{{ number_format($stats['total_referral_commissions'], 2) }}</p>
+                        <p class="text-xs text-gray-500">Earned by referrers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Pending Adverts -->
         <div class="card">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold">Pending Adverts</h2>
-                <a href="{{ route('admin.adverts.index') }}?status=pending" class="text-blue-600 hover:text-blue-700 font-medium">
+                <a href="{{ route('admin.adverts.index') }}?status=pending" class="text-[#2E6F40] hover:text-[#236030] font-medium">
                     View All →
                 </a>
             </div>
@@ -100,7 +158,7 @@
                                     ✓
                                 </button>
                             </form>
-                            <a href="{{ route('admin.adverts.show', $advert) }}" class="text-blue-600 hover:text-blue-700 text-2xl" title="Review">
+                            <a href="{{ route('admin.adverts.show', $advert) }}" class="text-[#2E6F40] hover:text-[#236030] text-2xl" title="Review">
                                 👁️
                             </a>
                         </div>
@@ -115,7 +173,7 @@
         <div class="card">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold">Recent Transactions</h2>
-                <a href="{{ route('admin.transactions.index') }}" class="text-blue-600 hover:text-blue-700 font-medium">
+                <a href="{{ route('admin.transactions.index') }}" class="text-[#2E6F40] hover:text-[#236030] font-medium">
                     View All →
                 </a>
             </div>
@@ -150,7 +208,7 @@
         <div class="card">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold">Recent Users</h2>
-                <a href="{{ route('admin.users.index') }}" class="text-blue-600 hover:text-blue-700 font-medium">
+                <a href="{{ route('admin.users.index') }}" class="text-[#2E6F40] hover:text-[#236030] font-medium">
                     View All →
                 </a>
             </div>
@@ -210,6 +268,73 @@
                     <span class="text-gray-600">Rejected Adverts</span>
                     <span class="font-bold text-red-600">{{ $stats['rejected_adverts'] }}</span>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Referral Details -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+        <!-- Top Referrers -->
+        <div class="card">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">🏆 Top Referrers</h2>
+            </div>
+
+            <div class="space-y-4">
+                @forelse($topReferrers as $referrer)
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center flex-1">
+                            <div class="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                                <span class="text-xl">👤</span>
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <p class="font-medium text-gray-900">{{ $referrer->name }}</p>
+                                <p class="text-sm text-gray-600">{{ $referrer->email }}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-lg text-primary-600">{{ $referrer->successful_referrals }}</p>
+                            <p class="text-xs text-gray-500">Referrals</p>
+                            <p class="text-sm font-semibold text-green-600">₦{{ number_format($referrer->total_commissions ?? 0, 2) }}</p>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-gray-500 text-center py-8">No referrals yet</p>
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Recent Referrals -->
+        <div class="card">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">🔗 Recent Referrals</h2>
+            </div>
+
+            <div class="space-y-4">
+                @forelse($recentReferrals as $referral)
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex-1">
+                            <p class="font-medium text-gray-900">
+                                {{ $referral->referrer->name ?? 'N/A' }} → {{ $referral->referred->name ?? 'Pending' }}
+                            </p>
+                            <p class="text-sm text-gray-600">Code: <code class="bg-gray-200 px-2 py-1 rounded">{{ $referral->referral_code }}</code></p>
+                            <p class="text-xs text-gray-500 mt-1">{{ $referral->created_at->diffForHumans() }}</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full {{
+                                $referral->status === 'completed' ? 'bg-green-100 text-green-800' :
+                                ($referral->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800')
+                            }}">
+                                {{ ucfirst($referral->status) }}
+                            </span>
+                            @if($referral->commission_earned > 0)
+                                <p class="text-sm font-semibold text-green-600 mt-1">₦{{ number_format($referral->commission_earned, 2) }}</p>
+                            @endif
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-gray-500 text-center py-8">No referrals yet</p>
+                @endforelse
             </div>
         </div>
     </div>

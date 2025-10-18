@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Transaction;
 use App\Models\Category;
 use App\Models\Blog;
+use App\Models\Referral;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -37,6 +38,12 @@ class DashboardController extends Controller
                 ->sum('amount'),
             'total_categories' => Category::count(),
             'total_blogs' => Blog::count(),
+            'total_referrals' => Referral::count(),
+            'active_referrals' => Referral::where('status', 'active')->count(),
+            'completed_referrals' => Referral::where('status', 'completed')->count(),
+            'total_referral_clicks' => Referral::whereNotNull('clicked_at')->count(),
+            'total_referral_signups' => Referral::whereNotNull('registered_at')->count(),
+            'total_referral_commissions' => Referral::sum('commission_earned'),
         ];
 
         // Monthly revenue for chart
@@ -86,6 +93,24 @@ class DashboardController extends Controller
             ->take(10)
             ->get();
 
+        // Top referrers
+        $topReferrers = User::withCount(['referrals as successful_referrals' => function ($query) {
+                $query->whereNotNull('registered_at');
+            }])
+            ->withSum(['referrals as total_commissions' => function ($query) {
+                $query->whereNotNull('registered_at');
+            }], 'commission_earned')
+            ->having('successful_referrals', '>', 0)
+            ->orderByDesc('successful_referrals')
+            ->take(10)
+            ->get();
+
+        // Recent referrals
+        $recentReferrals = Referral::with(['referrer', 'referred'])
+            ->latest()
+            ->take(10)
+            ->get();
+
         return view('admin.dashboard', compact(
             'stats',
             'monthlyRevenue',
@@ -93,7 +118,9 @@ class DashboardController extends Controller
             'recentAdverts',
             'pendingAdverts',
             'recentUsers',
-            'recentTransactions'
+            'recentTransactions',
+            'topReferrers',
+            'recentReferrals'
         ));
     }
 }

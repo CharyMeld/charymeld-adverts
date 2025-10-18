@@ -305,7 +305,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Images * (Up to 5 images)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Images (Up to 5 images - Required for Classified Ads)</label>
                     <input type="file" name="images[]" multiple accept="image/*"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg">
                     @error('images')

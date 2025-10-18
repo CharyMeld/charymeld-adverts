@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = [
         'name',
@@ -17,6 +18,7 @@ class Category extends Model
         'parent_id',
         'icon',
         'is_active',
+        'order',
     ];
 
     protected $casts = [
@@ -66,5 +68,18 @@ class Category extends Model
     public function scopeParents($query)
     {
         return $query->whereNull('parent_id');
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'is_active' => $this->is_active,
+        ];
     }
 }
