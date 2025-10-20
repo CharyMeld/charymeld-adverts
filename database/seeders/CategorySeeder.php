@@ -112,11 +112,17 @@ class CategorySeeder extends Seeder
             $children = $categoryData['children'] ?? [];
             unset($categoryData['children']);
 
-            $parent = Category::create($categoryData);
+            $parent = Category::updateOrCreate(
+                ['slug' => $categoryData['slug']], // Find by slug
+                $categoryData // Update or create with this data
+            );
 
             foreach ($children as $child) {
                 $child['parent_id'] = $parent->id;
-                Category::create($child);
+                Category::updateOrCreate(
+                    ['slug' => $child['slug']], // Find by slug
+                    $child // Update or create with this data
+                );
             }
         }
     }

@@ -1,20 +1,23 @@
 export default {
   darkMode: 'class',
   content: ['./resources/views/**/*.blade.php', './resources/js/**/*.vue'],
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     extend: {
       colors: {
         primary: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
+          50: '#f0f9f4',
+          100: '#daf0e3',
+          200: '#b3e0c6',
+          300: '#80cb9f',
+          400: '#4db378',
           500: '#2E6F40',
-          600: '#2E6F40',
-          700: '#236030',
-          800: '#1a4a24',
-          900: '#14381b',
+          600: '#265a35',
+          700: '#1e452a',
+          800: '#16311f',
+          900: '#0e1c13',
         },
       },
       fontFamily: {

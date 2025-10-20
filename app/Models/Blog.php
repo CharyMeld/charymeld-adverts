@@ -64,12 +64,22 @@ class Blog extends Model
 
     public function comments()
     {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function blogComments()
+    {
         return $this->hasMany(BlogComment::class);
     }
 
     public function approvedComments()
     {
         return $this->hasMany(BlogComment::class)->where('status', 'approved')->whereNull('parent_id');
+    }
+
+    public function reactions()
+    {
+        return $this->morphMany(Reaction::class, 'reactable');
     }
 
     /**

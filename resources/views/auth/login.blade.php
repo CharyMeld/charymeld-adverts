@@ -62,7 +62,34 @@
                     {{ __('messages.auth.login_button') }}
                 </button>
             </div>
+
+            <div class="text-center text-sm">
+                <a href="{{ route('account-recovery.create') }}" class="text-red-600 hover:text-red-800 font-medium">
+                    Can't access your account? Request account recovery
+                </a>
+            </div>
         </form>
+
+        <script>
+        // Fetch fresh CSRF token when login page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('{{ route("csrf.token") }}')
+                .then(response => response.json())
+                .then(data => {
+                    // Update meta tag
+                    document.querySelector('meta[name="csrf-token"]').setAttribute('content', data.token);
+
+                    // Update form CSRF input
+                    const csrfInput = document.querySelector('input[name="_token"]');
+                    if (csrfInput) {
+                        csrfInput.value = data.token;
+                    }
+                })
+                .catch(error => {
+                    console.log('Failed to refresh CSRF token:', error);
+                });
+        });
+        </script>
 
         <!-- Social Login -->
         <div class="mt-6">

@@ -1,0 +1,143 @@
+/* Browser Compatibility CSS */
+/* Vendor prefixes for maximum browser support */
+
+/* Flexbox fixes for older browsers */
+.flex {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+/* Grid fixes for older browsers */
+.grid {
+    display: -ms-grid;
+    display: grid;
+}
+
+/* Smooth scrolling for all browsers */
+html {
+    scroll-behavior: smooth;
+    -webkit-scroll-behavior: smooth;
+}
+
+/* Backdrop blur support */
+.backdrop-blur {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+@supports not ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+    .backdrop-blur {
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+}
+
+/* Transform support */
+.transform {
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+/* Transition support */
+.transition {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+/* Box-shadow support for older Safari */
+.shadow, .shadow-lg, .shadow-xl {
+    -webkit-box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Border-radius for older browsers */
+.rounded, .rounded-lg, .rounded-xl {
+    -webkit-border-radius: 0.5rem;
+    -moz-border-radius: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+/* User select fix */
+.select-none {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Appearance fix for form elements */
+input, select, textarea, button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Sticky positioning fallback */
+@supports not (position: sticky) {
+    .sticky {
+        position: fixed;
+        top: 0;
+        z-index: 50;
+    }
+}
+
+/* Object-fit fallback for IE */
+@supports not (object-fit: cover) {
+    .object-cover {
+        background-size: cover;
+        background-position: center;
+    }
+}
+
+/* Safari-specific fixes */
+@supports (-webkit-appearance: none) {
+    input[type="search"]::-webkit-search-decoration,
+    input[type="search"]::-webkit-search-cancel-button,
+    input[type="search"]::-webkit-search-results-button,
+    input[type="search"]::-webkit-search-results-decoration {
+        display: none;
+    }
+}
+
+/* Firefox-specific fixes */
+@-moz-document url-prefix() {
+    select {
+        padding-right: 2rem;
+    }
+}
+
+/* Edge-specific fixes */
+@supports (-ms-ime-align: auto) {
+    input {
+        padding: 0.5rem;
+    }
+}
+
+/* Mobile Safari fixes */
+@supports (-webkit-touch-callout: none) {
+    /* iOS Safari */
+    input, textarea, select {
+        font-size: 16px; /* Prevent zoom on focus */
+    }
+
+    .mobile input[type="text"],
+    .mobile input[type="email"],
+    .mobile input[type="password"],
+    .mobile textarea {
+        font-size: 16px !important;
+    }
+}
+
+/* Prevent iOS zoom */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    select, textarea, input {
+        font-size: 16px;
+    }
+}

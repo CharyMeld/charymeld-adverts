@@ -1,3 +1,6 @@
+/* Import browser compatibility CSS */
+@import './browser-compat.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

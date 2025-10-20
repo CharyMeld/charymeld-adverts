@@ -112,21 +112,22 @@ class ChatbotController extends Controller
 
     public function sendMessage(Request $request, ChatConversation $conversation)
     {
-        // Check ownership for both authenticated and guest users
-        if (auth()->check()) {
-            if ($conversation->user_id !== auth()->id()) {
-                abort(403);
+        try {
+            // Check ownership for both authenticated and guest users
+            if (auth()->check()) {
+                if ($conversation->user_id !== auth()->id()) {
+                    abort(403);
+                }
+            } else {
+                if ($conversation->session_id !== session()->getId()) {
+                    abort(403);
+                }
             }
-        } else {
-            if ($conversation->session_id !== session()->getId()) {
-                abort(403);
-            }
-        }
 
-        $request->validate([
-            'message' => 'required|string|max:5000',
-            'attachments.*' => 'nullable|file|max:10240', // 10MB max
-        ]);
+            $request->validate([
+                'message' => 'required|string|max:5000',
+                'attachments.*' => 'nullable|file|max:10240', // 10MB max
+            ]);
 
         // Handle file uploads
         $attachments = [];
@@ -194,21 +195,33 @@ class ChatbotController extends Controller
             'message' => $aiResponse,
         ]);
 
-        return response()->json([
-            'success' => true,
-            'user_message' => [
-                'id' => $userMessage->id,
-                'message' => $userMessage->message,
-                'created_at' => $userMessage->created_at->toISOString(),
-                'attachments' => $userMessage->attachments,
-            ],
-            'ai_message' => [
-                'id' => $aiMessage->id,
-                'message' => $aiMessage->message,
-                'created_at' => $aiMessage->created_at->toISOString(),
-            ],
-            'support_status' => $conversation->support_status,
-        ]);
+            return response()->json([
+                'success' => true,
+                'user_message' => [
+                    'id' => $userMessage->id,
+                    'message' => $userMessage->message,
+                    'created_at' => $userMessage->created_at->toISOString(),
+                    'attachments' => $userMessage->attachments,
+                ],
+                'ai_message' => [
+                    'id' => $aiMessage->id,
+                    'message' => $aiMessage->message,
+                    'created_at' => $aiMessage->created_at->toISOString(),
+                ],
+                'support_status' => $conversation->support_status,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Chatbot message send error: ' . $e->getMessage(), [
+                'conversation_id' => $conversation->id ?? null,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to send message: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function getMessages(ChatConversation $conversation)

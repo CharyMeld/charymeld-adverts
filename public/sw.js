@@ -1,14 +1,13 @@
 // Service Worker for CharyMeld Adverts PWA
-const CACHE_NAME = 'charymeld-adverts-v1';
+// Compatible with Chrome, Firefox, Safari, Edge, Samsung Internet
+'use strict';
+
+const CACHE_NAME = 'charymeld-adverts-v2';
 const OFFLINE_URL = '/offline.html';
 
 // Assets to cache immediately
 const PRECACHE_ASSETS = [
     '/',
-    '/offline.html',
-    '/css/app.css',
-    '/js/app.js',
-    '/images/logo.png',
     '/manifest.json'
 ];
 
@@ -18,10 +17,23 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log('[ServiceWorker] Pre-caching offline page');
-                return cache.addAll(PRECACHE_ASSETS);
+                console.log('[ServiceWorker] Pre-caching assets');
+                // Cache each asset individually to handle failures gracefully
+                return Promise.allSettled(
+                    PRECACHE_ASSETS.map(url =>
+                        cache.add(url).catch(err => {
+                            console.warn('[ServiceWorker] Failed to cache:', url, err);
+                            return Promise.resolve(); // Don't fail the entire install
+                        })
+                    )
+                );
             })
             .then(() => self.skipWaiting())
+            .catch(err => {
+                console.error('[ServiceWorker] Install failed:', err);
+                // Still skip waiting to activate the service worker
+                self.skipWaiting();
+            })
     );
 });
 
@@ -55,6 +67,14 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
+    // Skip API, admin, and authenticated routes from service worker caching
+    const url = new URL(event.request.url);
+    const skipPaths = ['/api/', '/admin/', '/advertiser/', '/publisher/', '/notifications/', '/feed'];
+    if (skipPaths.some(path => url.pathname.startsWith(path))) {
+        // Let these requests bypass service worker and go directly to network
+        return;
+    }
+
     event.respondWith(
         caches.match(event.request)
             .then((cachedResponse) => {
@@ -64,11 +84,20 @@ self.addEventListener('fetch', (event) => {
                     return cachedResponse;
                 }
 
-                // Not in cache, fetch from network
-                return fetch(event.request)
-                    .then((response) => {
-                        // Check if valid response
-                        if (!response || response.status !== 200 || response.type !== 'basic') {
+                // Not in cache, fetch from network with redirect: 'follow'
+                // Use standard fetch options for maximum compatibility
+                return fetch(event.request, {
+                    redirect: 'follow',
+                    credentials: 'same-origin'
+                })
+                    .then(function(response) {
+                        // Check if valid response (allow redirects)
+                        if (!response || (response.status !== 200 && response.type !== 'opaqueredirect')) {
+                            return response;
+                        }
+
+                        // Don't cache redirects
+                        if (response.redirected || response.type === 'opaqueredirect') {
                             return response;
                         }
 

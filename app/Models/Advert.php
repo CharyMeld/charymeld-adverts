@@ -113,6 +113,16 @@ class Advert extends Model
         return $this->hasMany(AdImpression::class, 'advert_id');
     }
 
+    public function reactions()
+    {
+        return $this->morphMany(Reaction::class, 'reactable');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
     public function clicks()
     {
         return $this->hasMany(AdClick::class, 'advert_id');

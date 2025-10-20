@@ -18,7 +18,16 @@ use App\Http\Controllers\Admin\TransactionController as AdminTransactionControll
 
 // Public Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home.adverts');
+Route::get('/csrf-token', [App\Http\Controllers\CsrfController::class, 'token'])->name('csrf.token');
 Route::get('/search', [HomeController::class, 'search'])->name('search');
+
+// Onboarding Routes
+Route::get('/onboarding/tour', [App\Http\Controllers\OnboardingController::class, 'tour'])->name('onboarding.tour');
+Route::get('/onboarding/advertiser-tour', [App\Http\Controllers\OnboardingController::class, 'advertiserTour'])->name('onboarding.advertiser');
+Route::get('/onboarding/admin-tour', [App\Http\Controllers\OnboardingController::class, 'adminTour'])->name('onboarding.admin');
+Route::post('/onboarding/complete', [App\Http\Controllers\OnboardingController::class, 'completeTour'])->name('onboarding.complete');
+Route::get('/onboarding/check/{tourType}', [App\Http\Controllers\OnboardingController::class, 'hasTourCompleted'])->name('onboarding.check');
 Route::get('/api/search/instant', [App\Http\Controllers\SearchController::class, 'instant'])->name('search.instant');
 Route::post('/api/analytics/contact-click', [App\Http\Controllers\Api\AnalyticsController::class, 'trackContactClick'])->name('api.analytics.contact-click');
 Route::get('/category/{slug}', [HomeController::class, 'category'])->name('category.show');
@@ -77,14 +86,45 @@ Route::middleware(['guest', 'bot.detect'])->group(function () {
     Route::post('/forgot-password', [App\Http\Controllers\Auth\PasswordResetController::class, 'sendResetLinkEmail'])->middleware('throttle:3,1')->name('password.email');
     Route::get('/reset-password/{token}', [App\Http\Controllers\Auth\PasswordResetController::class, 'showResetForm'])->name('password.reset');
     Route::post('/reset-password', [App\Http\Controllers\Auth\PasswordResetController::class, 'reset'])->middleware('throttle:5,1')->name('password.update');
+
+    // Account Recovery Routes (for locked/hacked accounts)
+    Route::get('/account-recovery', [App\Http\Controllers\AccountRecoveryController::class, 'create'])->name('account-recovery.create');
+    Route::post('/account-recovery', [App\Http\Controllers\AccountRecoveryController::class, 'store'])->middleware('throttle:3,10')->name('account-recovery.store'); // 3 requests per 10 minutes
 });
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+
+// Two-Factor Authentication Routes
+Route::middleware('guest')->group(function () {
+    Route::get('/login/2fa', [App\Http\Controllers\TwoFactorController::class, 'loginVerify'])->name('login.2fa');
+    Route::post('/login/2fa', [App\Http\Controllers\TwoFactorController::class, 'loginVerify'])->middleware('throttle:5,1');
+});
 
 // User Verification Routes
 Route::middleware('auth')->group(function () {
     Route::get('/verification', [App\Http\Controllers\VerificationController::class, 'index'])->name('verification.index');
     Route::post('/verification', [App\Http\Controllers\VerificationController::class, 'store'])->middleware(['bot.detect', 'throttle:3,10'])->name('verification.store');
+
+    // Two-Factor Authentication Settings
+    Route::prefix('profile/security')->name('profile.security.')->group(function () {
+        Route::get('/2fa', [App\Http\Controllers\TwoFactorController::class, 'index'])->name('2fa');
+        Route::get('/2fa/enable', [App\Http\Controllers\TwoFactorController::class, 'enable'])->name('2fa.enable');
+        Route::post('/2fa/verify', [App\Http\Controllers\TwoFactorController::class, 'verify'])->middleware('throttle:5,1')->name('2fa.verify');
+        Route::post('/2fa/disable', [App\Http\Controllers\TwoFactorController::class, 'disable'])->middleware('throttle:3,1')->name('2fa.disable');
+        Route::get('/2fa/recovery-codes', [App\Http\Controllers\TwoFactorController::class, 'recoveryCodes'])->name('2fa.recovery-codes');
+        Route::post('/2fa/recovery-codes/regenerate', [App\Http\Controllers\TwoFactorController::class, 'regenerateRecoveryCodes'])->middleware('throttle:3,10')->name('2fa.recovery-codes.regenerate');
+    });
+
+    // Security Reporting Routes
+    Route::prefix('security/reports')->name('security.reports.')->group(function () {
+        Route::get('/', [App\Http\Controllers\SecurityReportController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\SecurityReportController::class, 'create'])->name('create');
+        Route::post('/', [App\Http\Controllers\SecurityReportController::class, 'store'])->middleware(['bot.detect', 'throttle:5,10'])->name('store'); // 5 reports per 10 minutes
+        Route::get('/{id}', [App\Http\Controllers\SecurityReportController::class, 'show'])->name('show');
+    });
+
+    // Account Recovery Dashboard (for logged-in users to check their recovery requests)
+    Route::get('/account-recovery/requests', [App\Http\Controllers\AccountRecoveryController::class, 'index'])->name('account-recovery.index');
 });
 
 // Email Verification Routes (optional - can be enabled later)
@@ -260,6 +300,20 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/verifications/{verification}', [App\Http\Controllers\VerificationController::class, 'adminShow'])->name('verifications.show');
     Route::post('/verifications/{verification}/approve', [App\Http\Controllers\VerificationController::class, 'approve'])->middleware('throttle:10,1')->name('verifications.approve');
     Route::post('/verifications/{verification}/reject', [App\Http\Controllers\VerificationController::class, 'reject'])->middleware('throttle:10,1')->name('verifications.reject');
+
+    // Security Management
+    Route::prefix('security')->name('security.')->group(function () {
+        // Security Reports
+        Route::get('/reports', [App\Http\Controllers\Admin\SecurityReportController::class, 'index'])->name('reports.index');
+        Route::get('/reports/{id}', [App\Http\Controllers\Admin\SecurityReportController::class, 'show'])->name('reports.show');
+        Route::put('/reports/{id}', [App\Http\Controllers\Admin\SecurityReportController::class, 'update'])->middleware('throttle:20,1')->name('reports.update');
+        Route::post('/reports/{id}/action', [App\Http\Controllers\Admin\SecurityReportController::class, 'takeAction'])->middleware('throttle:10,1')->name('reports.action');
+
+        // Account Recovery Requests
+        Route::get('/recovery-requests', [App\Http\Controllers\Admin\SecurityReportController::class, 'recoveryRequests'])->name('recovery.index');
+        Route::get('/recovery-requests/{id}', [App\Http\Controllers\Admin\SecurityReportController::class, 'showRecoveryRequest'])->name('recovery.show');
+        Route::put('/recovery-requests/{id}', [App\Http\Controllers\Admin\SecurityReportController::class, 'updateRecoveryRequest'])->middleware('throttle:20,1')->name('recovery.update');
+    });
 });
 
 // Chatbot Routes - Accessible to all users (guests and authenticated)
@@ -287,4 +341,77 @@ Route::prefix('api/ad')->name('api.ad.')->middleware(['bot.detect', 'fraud.prote
 
     // Protected route - requires auth
     Route::middleware('auth')->get('/stats/{id}', [App\Http\Controllers\Api\AdController::class, 'stats'])->name('stats');
+});
+
+// Feed Routes (authenticated users only)
+Route::middleware('auth')->group(function () {
+    Route::get('/feed', [App\Http\Controllers\FeedController::class, 'index'])->name('feed.index');
+    Route::post('/feed/react', [App\Http\Controllers\FeedController::class, 'react'])->name('feed.react');
+    Route::post('/feed/comment', [App\Http\Controllers\FeedController::class, 'comment'])->name('feed.comment');
+    Route::get('/feed/comments/{type}/{id}', [App\Http\Controllers\FeedController::class, 'getComments'])->name('feed.comments');
+});
+
+// User Networking Routes
+Route::middleware('auth')->group(function () {
+    // Profile routes
+    Route::get('/profile/{username}', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile', [App\Http\Controllers\ProfileController::class, 'store'])->middleware(['bot.detect', 'throttle:5,1'])->name('profile.store');
+    Route::put('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->middleware(['bot.detect', 'throttle:10,1'])->name('profile.update');
+
+    // Follow routes
+    Route::post('/follow/{user}', [App\Http\Controllers\FollowController::class, 'follow'])->middleware('throttle:20,1')->name('follow');
+    Route::delete('/unfollow/{user}', [App\Http\Controllers\FollowController::class, 'unfollow'])->middleware('throttle:20,1')->name('unfollow');
+    Route::get('/users/{user}/followers', [App\Http\Controllers\FollowController::class, 'followers'])->name('followers');
+    Route::get('/users/{user}/following', [App\Http\Controllers\FollowController::class, 'following'])->name('following');
+
+    // Group routes
+    Route::prefix('groups')->name('groups.')->group(function () {
+        Route::get('/', [App\Http\Controllers\GroupController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\GroupController::class, 'create'])->name('create');
+        Route::post('/', [App\Http\Controllers\GroupController::class, 'store'])->middleware(['bot.detect', 'throttle:5,1'])->name('store');
+        Route::get('/{slug}', [App\Http\Controllers\GroupController::class, 'show'])->name('show');
+        Route::get('/{slug}/edit', [App\Http\Controllers\GroupController::class, 'edit'])->name('edit');
+        Route::put('/{slug}', [App\Http\Controllers\GroupController::class, 'update'])->middleware(['bot.detect', 'throttle:10,1'])->name('update');
+        Route::post('/{slug}/join', [App\Http\Controllers\GroupController::class, 'join'])->middleware('throttle:10,1')->name('join');
+        Route::delete('/{slug}/leave', [App\Http\Controllers\GroupController::class, 'leave'])->middleware('throttle:10,1')->name('leave');
+        Route::get('/{slug}/members', [App\Http\Controllers\GroupController::class, 'members'])->name('members');
+    });
+
+    // Group chat routes
+    Route::prefix('groups/{group}/chat')->name('group-chat.')->group(function () {
+        Route::get('/', [App\Http\Controllers\GroupChatController::class, 'index'])->name('index');
+        Route::post('/messages', [App\Http\Controllers\GroupChatController::class, 'sendMessage'])->middleware(['bot.detect', 'throttle:60,1'])->name('send');
+        Route::get('/messages', [App\Http\Controllers\GroupChatController::class, 'getMessages'])->name('messages');
+        Route::post('/attachment', [App\Http\Controllers\GroupChatController::class, 'uploadAttachment'])->middleware(['bot.detect', 'throttle:10,1'])->name('attachment');
+    });
+
+    // Direct chat routes
+    Route::prefix('chat')->name('chat.')->group(function () {
+        Route::get('/', [App\Http\Controllers\DirectChatController::class, 'index'])->name('index');
+        Route::get('/{user}', [App\Http\Controllers\DirectChatController::class, 'show'])->name('show');
+        Route::post('/{user}/messages', [App\Http\Controllers\DirectChatController::class, 'sendMessage'])->middleware(['bot.detect', 'throttle:60,1'])->name('send');
+        Route::get('/{user}/messages', [App\Http\Controllers\DirectChatController::class, 'getMessages'])->name('messages');
+        Route::post('/{user}/read', [App\Http\Controllers\DirectChatController::class, 'markAsRead'])->middleware('throttle:30,1')->name('read');
+        Route::post('/{user}/attachment', [App\Http\Controllers\DirectChatController::class, 'uploadAttachment'])->middleware(['bot.detect', 'throttle:10,1'])->name('attachment');
+        Route::get('/unread/count', [App\Http\Controllers\DirectChatController::class, 'unreadCount'])->name('unread-count');
+    });
+
+    // Video routes
+    Route::prefix('videos')->name('videos.')->group(function () {
+        Route::get('/', [App\Http\Controllers\VideoController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\VideoController::class, 'create'])->name('create');
+        Route::post('/', [App\Http\Controllers\VideoController::class, 'store'])->middleware(['bot.detect', 'throttle:5,10'])->name('store'); // 5 uploads per 10 minutes
+        Route::get('/{video}', [App\Http\Controllers\VideoController::class, 'show'])->name('show');
+        Route::get('/{video}/stream', [App\Http\Controllers\VideoController::class, 'stream'])->name('stream');
+        Route::get('/{video}/edit', [App\Http\Controllers\VideoController::class, 'edit'])->name('edit');
+        Route::put('/{video}', [App\Http\Controllers\VideoController::class, 'update'])->middleware(['bot.detect', 'throttle:10,1'])->name('update');
+        Route::delete('/{video}', [App\Http\Controllers\VideoController::class, 'destroy'])->middleware('throttle:5,1')->name('destroy');
+    });
+
+    // Reaction routes
+    Route::prefix('reactions')->name('reactions.')->group(function () {
+        Route::post('/', [App\Http\Controllers\ReactionController::class, 'store'])->middleware(['bot.detect', 'throttle:30,1'])->name('store'); // 30 reactions per minute
+        Route::get('/counts', [App\Http\Controllers\ReactionController::class, 'getCounts'])->name('counts');
+    });
 });

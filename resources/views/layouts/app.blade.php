@@ -35,6 +35,35 @@
     <script src="{{ asset('js/theme-toggle.js') }}"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
 
+    <!-- Browser Compatibility Script -->
+    <script>
+        // Detect browser and add class to html element
+        (function() {
+            var ua = navigator.userAgent;
+            var browser = 'unknown';
+
+            if (ua.indexOf('Firefox') > -1) browser = 'firefox';
+            else if (ua.indexOf('SamsungBrowser') > -1) browser = 'samsung';
+            else if (ua.indexOf('Opera') > -1 || ua.indexOf('OPR') > -1) browser = 'opera';
+            else if (ua.indexOf('Trident') > -1) browser = 'ie';
+            else if (ua.indexOf('Edge') > -1) browser = 'edge';
+            else if (ua.indexOf('Chrome') > -1) browser = 'chrome';
+            else if (ua.indexOf('Safari') > -1) browser = 'safari';
+
+            document.documentElement.className += ' browser-' + browser;
+
+            // Check for mobile
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua)) {
+                document.documentElement.className += ' mobile';
+            }
+
+            // Warn about old browsers
+            if (browser === 'ie') {
+                console.warn('Internet Explorer is not fully supported. Please use a modern browser.');
+            }
+        })();
+    </script>
+
     <!-- Analytics & Tracking -->
     @include('components.analytics')
 </head>
@@ -66,74 +95,111 @@
                     @auth
                         <div class="hidden md:flex md:items-center md:space-x-2">
                             @if(auth()->user()->isAdmin())
-                                <!-- Dashboard -->
-                                <a href="{{ route('admin.dashboard') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
-                                    Dashboard
+                                <!-- Feed First -->
+                                <a href="{{ route('feed.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm font-semibold">
+                                    📰 Feed
                                 </a>
 
-                                <!-- Content Management Dropdown -->
+                                <!-- Social Features -->
+                                <a href="{{ route('videos.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
+                                    🎥 Videos
+                                </a>
+                                <a href="{{ route('groups.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
+                                    👥 Groups
+                                </a>
+                                <a href="{{ route('chat.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
+                                    💬 Messages
+                                </a>
+
+                                <!-- Admin Menu Dropdown -->
                                 <div class="relative" x-data="{ open: false }">
                                     <button @click="open = !open" @click.away="open = false" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm flex items-center">
-                                        Content
+                                        ⚙️ Admin
                                         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                         </svg>
                                     </button>
-                                    <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50">
-                                        <a href="{{ route('admin.adverts.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-t-lg">
+                                    <div x-show="open" x-transition class="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50 max-h-96 overflow-y-auto">
+                                        <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-t-lg font-semibold border-b border-gray-200 dark:border-gray-700">
+                                            📊 Dashboard
+                                        </a>
+
+                                        <div class="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Content</div>
+                                        <a href="{{ route('admin.adverts.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
                                             📢 Adverts
                                         </a>
                                         <a href="{{ route('admin.blogs.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
                                             📝 Blogs
                                         </a>
-                                        <a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-b-lg">
+                                        <a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
                                             📁 Categories
                                         </a>
-                                    </div>
-                                </div>
 
-                                <!-- Users Dropdown -->
-                                <div class="relative" x-data="{ open: false }">
-                                    <button @click="open = !open" @click.away="open = false" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm flex items-center">
-                                        Users
-                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                        </svg>
-                                    </button>
-                                    <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50">
-                                        <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-t-lg">
+                                        <div class="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase border-t border-gray-200 dark:border-gray-700">Users</div>
+                                        <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
                                             👥 All Users
                                         </a>
                                         <a href="{{ route('admin.publishers.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
                                             📰 Publishers
                                         </a>
-                                        <a href="{{ route('admin.verifications.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-b-lg">
+                                        <a href="{{ route('admin.verifications.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
                                             ✅ Verifications
+                                        </a>
+
+                                        <div class="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase border-t border-gray-200 dark:border-gray-700">Finance</div>
+                                        <a href="{{ route('admin.transactions.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            💳 Transactions
+                                        </a>
+                                        <a href="{{ route('admin.payouts.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            💰 Payouts
+                                        </a>
+
+                                        <div class="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase border-t border-gray-200 dark:border-gray-700">Security</div>
+                                        <a href="{{ route('admin.security.reports.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            🚨 Security Reports
+                                        </a>
+                                        <a href="{{ route('admin.security.recovery.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            🔑 Account Recovery
+                                        </a>
+
+                                        <a href="{{ route('admin.support-chat.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-b-lg border-t border-gray-200 dark:border-gray-700">
+                                            🎧 Support Chat
                                         </a>
                                     </div>
                                 </div>
 
-                                <!-- Finance Dropdown -->
+                                <!-- Security Management Dropdown for Admin -->
                                 <div class="relative" x-data="{ open: false }">
                                     <button @click="open = !open" @click.away="open = false" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm flex items-center">
-                                        Finance
+                                        🔒 Security
                                         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                         </svg>
                                     </button>
-                                    <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50">
-                                        <a href="{{ route('admin.transactions.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-t-lg">
-                                            💳 Transactions
+                                    <div x-show="open" x-transition class="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50">
+                                        <div class="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Admin Security</div>
+                                        <a href="{{ route('admin.security.reports.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            🚨 Security Reports
                                         </a>
-                                        <a href="{{ route('admin.payouts.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-b-lg">
-                                            💰 Payouts
+                                        <a href="{{ route('admin.security.recovery.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            🔑 Account Recovery
+                                        </a>
+                                        <div class="border-t border-gray-200 dark:border-gray-700 my-1"></div>
+                                        <div class="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Personal</div>
+                                        <a href="{{ route('profile.security.2fa') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            🔐 Two-Factor Auth
+                                        </a>
+                                        <a href="{{ route('security.reports.create') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            📝 Report Issue
+                                        </a>
+                                        <a href="{{ route('security.reports.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-b-lg">
+                                            📋 My Reports
                                         </a>
                                     </div>
                                 </div>
 
-                                <!-- Support -->
-                                <a href="{{ route('admin.support-chat.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
-                                    Support
+                                <a href="{{ route('profile.show', auth()->user()->name) }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
+                                    👤 Profile
                                 </a>
 
                                 <!-- Admin Notification Bell -->
@@ -162,58 +228,87 @@
                                     </div>
                                 </div>
                             @else
-                                <!-- Advertiser Dashboard -->
-                                <a href="{{ route('advertiser.dashboard') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
-                                    Dashboard
+                                <!-- Feed First -->
+                                <a href="{{ route('feed.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm font-semibold">
+                                    📰 Feed
                                 </a>
 
-                                <!-- Campaigns Dropdown -->
-                                <div class="relative" x-data="{ open: false }">
-                                    <button @click="open = !open" @click.away="open = false" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm flex items-center">
-                                        Campaigns
-                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                        </svg>
-                                    </button>
-                                    <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50">
-                                        <a href="{{ route('advertiser.adverts.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-t-lg">
-                                            📢 My Adverts
-                                        </a>
-                                        <a href="{{ route('advertiser.campaigns.create') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-b-lg">
-                                            ➕ Create Campaign
-                                        </a>
-                                    </div>
-                                </div>
+                                <!-- Social Features -->
+                                <a href="{{ route('videos.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
+                                    🎥 Videos
+                                </a>
+                                <a href="{{ route('groups.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
+                                    👥 Groups
+                                </a>
+                                <a href="{{ route('chat.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
+                                    💬 Messages
+                                </a>
 
-                                <!-- Analytics & Reports -->
+                                <!-- Advertiser Menu Dropdown -->
                                 <div class="relative" x-data="{ open: false }">
                                     <button @click="open = !open" @click.away="open = false" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm flex items-center">
-                                        Analytics
+                                        💼 Advertiser
                                         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                         </svg>
                                     </button>
                                     <div x-show="open" x-transition class="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50">
-                                        <a href="{{ route('advertiser.analytics.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-t-lg">
+                                        <a href="{{ route('advertiser.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-t-lg font-semibold border-b border-gray-200 dark:border-gray-700">
+                                            📊 Dashboard
+                                        </a>
+
+                                        <div class="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Campaigns</div>
+                                        <a href="{{ route('advertiser.adverts.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            📢 My Adverts
+                                        </a>
+                                        <a href="{{ route('advertiser.campaigns.create') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            ➕ Create Campaign
+                                        </a>
+
+                                        <div class="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase border-t border-gray-200 dark:border-gray-700">Analytics</div>
+                                        <a href="{{ route('advertiser.analytics.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
                                             📊 Analytics Dashboard
                                         </a>
                                         <a href="{{ route('advertiser.reports.all-campaigns.pdf') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
-                                            📄 Download PDF Report
+                                            📄 PDF Report
                                         </a>
-                                        <a href="{{ route('advertiser.reports.all-campaigns.csv') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-b-lg">
-                                            📥 Download CSV Report
+                                        <a href="{{ route('advertiser.reports.all-campaigns.csv') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            📥 CSV Report
+                                        </a>
+
+                                        <a href="{{ route('advertiser.messages.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 border-t border-gray-200 dark:border-gray-700">
+                                            💬 Messages
                                         </a>
                                     </div>
                                 </div>
 
-                                <!-- Messages -->
-                                <a href="{{ route('advertiser.messages.index') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
-                                    Messages
-                                </a>
-
-                                <!-- Referrals -->
                                 <a href="{{ route('referrals.dashboard') }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
                                     🔗 Referrals
+                                </a>
+
+                                <!-- Security Dropdown -->
+                                <div class="relative" x-data="{ open: false }">
+                                    <button @click="open = !open" @click.away="open = false" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm flex items-center">
+                                        🔒 Security
+                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </button>
+                                    <div x-show="open" x-transition class="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-white/20 z-50">
+                                        <a href="{{ route('profile.security.2fa') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-t-lg">
+                                            🔐 Two-Factor Auth
+                                        </a>
+                                        <a href="{{ route('security.reports.create') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20">
+                                            🚨 Report Issue
+                                        </a>
+                                        <a href="{{ route('security.reports.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-white/20 rounded-b-lg">
+                                            📋 My Reports
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <a href="{{ route('profile.show', auth()->user()->name) }}" class="nav-link px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-white/20 text-gray-700 dark:text-gray-200 text-sm">
+                                    👤 Profile
                                 </a>
 
                                 <!-- Publisher Section (if user is also a publisher) -->
@@ -246,7 +341,7 @@
                                     </a>
                                 @endif
                             @endif
-                            <form method="POST" action="{{ route('logout') }}" class="inline">
+                            <form method="POST" action="{{ route('logout') }}" class="inline" id="logout-form-desktop">
                                 @csrf
                                 <button type="submit" class="text-gray-700 hover:text-red-600 px-4 py-2 rounded-lg hover:bg-red-50 transition-colors duration-200 font-medium">Logout</button>
                             </form>
@@ -323,16 +418,24 @@
                     @if(auth()->user()->isAdmin())
                         <a href="{{ route('admin.dashboard') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">Admin Panel</a>
                         <a href="{{ route('admin.publishers.index') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">Publishers</a>
+                        <a href="{{ route('profile.show', auth()->user()->name) }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">👤 Profile</a>
+                        <a href="{{ route('groups.index') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">👥 Groups</a>
+                        <a href="{{ route('chat.index') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">💬 Messages</a>
+                        <a href="{{ route('videos.index') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">🎥 Videos</a>
                     @else
                         <a href="{{ route('advertiser.dashboard') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">Dashboard</a>
                         <a href="{{ route('referrals.dashboard') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">🔗 Referrals</a>
+                        <a href="{{ route('profile.show', auth()->user()->name) }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">👤 Profile</a>
+                        <a href="{{ route('groups.index') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">👥 Groups</a>
+                        <a href="{{ route('chat.index') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">💬 Messages</a>
+                        <a href="{{ route('videos.index') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">🎥 Videos</a>
                         @if(auth()->user()->isPublisher())
                             <a href="{{ route('publisher.dashboard') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">Publisher Dashboard</a>
                         @else
                             <a href="{{ route('publisher.register') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-green-600 hover:bg-green-50">💰 Earn Money - Become Publisher</a>
                         @endif
                     @endif
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form method="POST" action="{{ route('logout') }}" id="logout-form-mobile">
                         @csrf
                         <button type="submit" class="block w-full text-left pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">Logout</button>
                     </form>
@@ -377,6 +480,9 @@
     <main>
         @yield('content')
     </main>
+
+    <!-- AI Assistant Widget for Onboarding -->
+    @include('components.ai-assistant-widget')
 
     <!-- Floating Chatbot Widget -->
     <div id="chatbot-widget" class="fixed bottom-6 right-6 z-[9999]">
@@ -977,9 +1083,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div>
-                    <div class="mb-4">
+                    <div class="mb-6">
                         <a href="{{ route('home') }}" class="inline-block">
-                            <img src="{{ asset('images/logo.png') }}" alt="CharyMeld Adverts" class="h-12 w-auto">
+                            <img src="{{ asset('images/logo.png') }}" alt="CharyMeld Adverts" class="h-20 w-auto">
                         </a>
                     </div>
                     <p class="text-white/90 leading-relaxed">Your trusted marketplace for buying and selling. Connect with thousands of buyers and sellers.</p>
@@ -1220,6 +1326,15 @@
         async function updateNotificationCount() {
             try {
                 const response = await fetch('{{ route("admin.notifications.unread-count") }}');
+
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        // User is not authorized (not an admin), stop polling
+                        return;
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const data = await response.json();
 
                 const badge = document.getElementById('notificationBadge');
@@ -1230,7 +1345,8 @@
                     badge.classList.add('hidden');
                 }
             } catch (error) {
-                console.error('Error updating notification count:', error);
+                // Silently fail for non-critical notification updates
+                console.debug('Notification update skipped:', error.message);
             }
         }
 
@@ -1454,6 +1570,26 @@
             }
             return outputArray;
         }
+
+        // Refresh CSRF token every 60 seconds to prevent expiration
+        document.addEventListener('DOMContentLoaded', function() {
+            setInterval(function() {
+                fetch('{{ route("csrf.token") }}', {
+                    method: 'GET',
+                    credentials: 'same-origin'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Update meta tag with fresh token
+                    document.querySelector('meta[name="csrf-token"]').setAttribute('content', data.token);
+                })
+                .catch(error => {
+                    console.log('CSRF token refresh failed:', error);
+                });
+            }, 60000); // Every 60 seconds
+        });
     </script>
+
+    @stack('scripts')
 </body>
 </html>

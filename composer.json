@@ -11,7 +11,10 @@
         "spatie/laravel-sitemap": "^7.3",
         "laravel/socialite": "^5.23",
         "ladumor/laravel-pwa": "^0.0.5",
-        "laravel/reverb": "^1.0"
+        "laravel/reverb": "^1.0",
+        "php-ffmpeg/php-ffmpeg": "^1.3",
+        "pragmarx/google2fa-laravel": "^2.3",
+        "bacon/bacon-qr-code": "^3.0"
     },
     "autoload": {
         "psr-4": {

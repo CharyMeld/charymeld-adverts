@@ -13,8 +13,9 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">1. Introduction</h2>
                 <p class="text-gray-700 dark:text-gray-300">
                     CharyMeld Adverts ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy
-                    explains how we collect, use, disclose, and safeguard your information when you use our classified
-                    advertising platform.
+                    explains how we collect, use, disclose, and safeguard your information when you use our comprehensive
+                    platform, which includes classified advertising, social networking, campaign management, monetization
+                    programs (referral and publisher), and community features.
                 </p>
             </section>
 
@@ -23,34 +24,48 @@
                 <p class="text-gray-700 dark:text-gray-300 mb-3">We collect information that you provide directly to us:</p>
                 <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
                     <li><strong>Account Information:</strong> Name, email address, phone number, and password</li>
-                    <li><strong>Profile Information:</strong> Optional profile picture, bio, and preferences</li>
-                    <li><strong>Advertisement Data:</strong> Product/service details, images, pricing, and location</li>
+                    <li><strong>Profile Information:</strong> Optional profile picture, bio, social links, and preferences</li>
+                    <li><strong>Advertisement Data:</strong> Classified ads and campaign details (text/video), images, pricing, location, and category</li>
+                    <li><strong>Social Content:</strong> Posts on social feed, video uploads, group memberships, and community interactions</li>
                     <li><strong>Payment Information:</strong> Processed securely through Paystack and Flutterwave</li>
-                    <li><strong>Communications:</strong> Messages sent through our platform</li>
+                    <li><strong>Communications:</strong> Direct messages, chat conversations, and platform notifications</li>
+                    <li><strong>Referral Data:</strong> Referral codes, referral earnings, and referred users</li>
+                    <li><strong>Publisher Data:</strong> Ad placements, impressions, clicks, and earnings for publisher program participants</li>
+                    <li><strong>Campaign Analytics:</strong> Ad performance data, impressions, clicks, and conversion metrics</li>
                     <li><strong>Social Login Data:</strong> When you use Google or Facebook login, we receive basic profile information (name, email, profile picture) as permitted by those services</li>
+                    <li><strong>Security Data:</strong> Two-factor authentication settings, login alerts preferences, and login history</li>
                 </ul>
             </section>
 
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">3. Information Collected Automatically</h2>
                 <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
-                    <li><strong>Usage Data:</strong> Pages viewed, time spent, click patterns</li>
-                    <li><strong>Device Information:</strong> IP address, browser type, operating system</li>
-                    <li><strong>Cookies:</strong> We use cookies to maintain sessions and improve user experience</li>
-                    <li><strong>Analytics:</strong> Google Analytics and Meta Pixel for website performance tracking</li>
+                    <li><strong>Usage Data:</strong> Pages viewed, time spent, click patterns, ad interactions, video views, and social engagement</li>
+                    <li><strong>Device Information:</strong> IP address, browser type, operating system, device model, and screen resolution</li>
+                    <li><strong>Cookies:</strong> We use cookies to maintain sessions, remember preferences, and improve user experience</li>
+                    <li><strong>Analytics:</strong> Google Analytics and Meta Pixel for website performance tracking and advertising optimization</li>
+                    <li><strong>PWA Data:</strong> Service worker cache, offline usage patterns, and push notification preferences</li>
+                    <li><strong>Location Data:</strong> Approximate location based on IP address for location-based search and content</li>
+                    <li><strong>Performance Metrics:</strong> Ad views, impressions, click-through rates, and campaign performance data</li>
                 </ul>
             </section>
 
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">4. How We Use Your Information</h2>
                 <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
-                    <li>To provide and maintain our service</li>
-                    <li>To process your advertisements and transactions</li>
-                    <li>To communicate with you about your account and listings</li>
-                    <li>To send promotional emails (you can opt-out anytime)</li>
-                    <li>To improve our platform and user experience</li>
-                    <li>To detect and prevent fraud and abuse</li>
-                    <li>To comply with legal obligations</li>
+                    <li>To provide and maintain our comprehensive platform services (marketplace, social, campaigns)</li>
+                    <li>To process your advertisements, campaigns, and transactions</li>
+                    <li>To facilitate social networking features (feed, videos, groups, messaging)</li>
+                    <li>To manage referral program earnings and publisher program payouts</li>
+                    <li>To track and display campaign analytics and performance metrics</li>
+                    <li>To communicate with you about your account, listings, and earnings</li>
+                    <li>To send push notifications about messages, ads, and platform updates (you can opt-out anytime)</li>
+                    <li>To send promotional emails and platform newsletters (you can opt-out anytime)</li>
+                    <li>To enable two-factor authentication and security alerts</li>
+                    <li>To improve our platform, algorithms, and user experience</li>
+                    <li>To detect and prevent fraud, abuse, and prohibited content</li>
+                    <li>To provide customer support and respond to inquiries</li>
+                    <li>To comply with legal obligations and enforce our terms</li>
                 </ul>
             </section>
 
@@ -71,19 +86,33 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">6. Information Sharing</h2>
                 <p class="text-gray-700 dark:text-gray-300 mb-3">We do not sell your personal information. We may share your information with:</p>
                 <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
-                    <li><strong>Other Users:</strong> Your public listings and contact information are visible to potential buyers</li>
-                    <li><strong>Service Providers:</strong> Payment processors (Paystack, Flutterwave), hosting providers</li>
-                    <li><strong>Analytics Partners:</strong> Google Analytics, Meta Pixel (anonymized data)</li>
-                    <li><strong>Legal Requirements:</strong> When required by law or to protect our rights</li>
+                    <li><strong>Other Users:</strong> Your public listings, social posts, videos, group content, and contact information are visible to other users based on privacy settings</li>
+                    <li><strong>Advertisers:</strong> Campaign performance metrics (anonymized) to help optimize their advertising</li>
+                    <li><strong>Publishers:</strong> Ad performance data for publisher program participants to track earnings</li>
+                    <li><strong>Referrers:</strong> Information about successful referrals for referral program tracking</li>
+                    <li><strong>Service Providers:</strong> Payment processors (Paystack, Flutterwave), hosting providers, email services, and SMS providers</li>
+                    <li><strong>Analytics Partners:</strong> Google Analytics, Meta Pixel (anonymized data for tracking and optimization)</li>
+                    <li><strong>Social Platforms:</strong> When you use social login or share content to social media</li>
+                    <li><strong>Legal Requirements:</strong> When required by law, court order, or to protect our rights and users' safety</li>
                 </ul>
             </section>
 
             <section>
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">7. Data Security</h2>
-                <p class="text-gray-700 dark:text-gray-300">
+                <p class="text-gray-700 dark:text-gray-300 mb-3">
                     We implement appropriate technical and organizational measures to protect your data, including:
-                    encryption, secure servers, access controls, and regular security audits. However, no method of
-                    transmission over the Internet is 100% secure.
+                </p>
+                <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
+                    <li>Encryption of sensitive data in transit and at rest</li>
+                    <li>Two-factor authentication (2FA) to secure accounts</li>
+                    <li>Login alerts for suspicious activity detection</li>
+                    <li>Secure servers with firewalls and intrusion detection</li>
+                    <li>Access controls limiting employee access to personal data</li>
+                    <li>Regular security audits and vulnerability assessments</li>
+                    <li>Secure payment processing through certified providers</li>
+                </ul>
+                <p class="text-gray-700 dark:text-gray-300 mt-3">
+                    However, no method of transmission over the Internet is 100% secure. We encourage users to enable 2FA and use strong passwords.
                 </p>
             </section>
 

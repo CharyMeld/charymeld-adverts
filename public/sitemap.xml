@@ -1,650 +1,578 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
     <url>
-    <loc>http://localhost</loc>
-    <lastmod>2025-10-18T03:27:07+00:00</lastmod>
+    <loc>http://localhost:8000</loc>
+    <lastmod>2025-10-19T16:18:11+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
             </url>
     <url>
-    <loc>http://localhost/about</loc>
-    <lastmod>2025-10-18T03:27:07+00:00</lastmod>
+    <loc>http://localhost:8000/about</loc>
+    <lastmod>2025-10-19T16:18:11+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/contact</loc>
-    <lastmod>2025-10-18T03:27:07+00:00</lastmod>
+    <loc>http://localhost:8000/contact</loc>
+    <lastmod>2025-10-19T16:18:11+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/terms</loc>
-    <lastmod>2025-10-18T03:27:07+00:00</lastmod>
+    <loc>http://localhost:8000/terms</loc>
+    <lastmod>2025-10-19T16:18:11+00:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
             </url>
     <url>
-    <loc>http://localhost/blogs</loc>
-    <lastmod>2025-10-18T03:27:07+00:00</lastmod>
+    <loc>http://localhost:8000/blogs</loc>
+    <lastmod>2025-10-19T16:18:11+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
             </url>
     <url>
-    <loc>http://localhost/category/real-estate</loc>
-    <lastmod>2025-10-18T03:26:26+00:00</lastmod>
+    <loc>http://localhost:8000/category/real-estate</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/real-estate-houses</loc>
-    <lastmod>2025-10-18T03:26:27+00:00</lastmod>
+    <loc>http://localhost:8000/category/real-estate-houses</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/real-estate-apartments</loc>
-    <lastmod>2025-10-18T03:26:27+00:00</lastmod>
+    <loc>http://localhost:8000/category/real-estate-apartments</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/real-estate-lands</loc>
-    <lastmod>2025-10-18T03:26:27+00:00</lastmod>
+    <loc>http://localhost:8000/category/real-estate-lands</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/real-estate-commercial</loc>
-    <lastmod>2025-10-18T03:26:28+00:00</lastmod>
+    <loc>http://localhost:8000/category/real-estate-commercial</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/real-estate-short-let</loc>
-    <lastmod>2025-10-18T03:26:28+00:00</lastmod>
+    <loc>http://localhost:8000/category/real-estate-short-let</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/vehicles</loc>
-    <lastmod>2025-10-18T03:26:29+00:00</lastmod>
+    <loc>http://localhost:8000/category/vehicles</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/vehicles-cars-for-sale</loc>
-    <lastmod>2025-10-18T03:26:29+00:00</lastmod>
+    <loc>http://localhost:8000/category/vehicles-cars-for-sale</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/vehicles-motorcycles</loc>
-    <lastmod>2025-10-18T03:26:31+00:00</lastmod>
+    <loc>http://localhost:8000/category/vehicles-motorcycles</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/vehicles-trucks</loc>
-    <lastmod>2025-10-18T03:26:31+00:00</lastmod>
+    <loc>http://localhost:8000/category/vehicles-trucks</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/vehicles-vehicle-parts</loc>
-    <lastmod>2025-10-18T03:26:31+00:00</lastmod>
+    <loc>http://localhost:8000/category/vehicles-vehicle-parts</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/jobs-services</loc>
-    <lastmod>2025-10-18T03:26:31+00:00</lastmod>
+    <loc>http://localhost:8000/category/jobs-services</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/jobs-services-job-offers</loc>
-    <lastmod>2025-10-18T03:26:31+00:00</lastmod>
+    <loc>http://localhost:8000/category/jobs-services-job-offers</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/jobs-services-job-seekers</loc>
-    <lastmod>2025-10-18T03:26:32+00:00</lastmod>
+    <loc>http://localhost:8000/category/jobs-services-job-seekers</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/jobs-services-freelancers</loc>
-    <lastmod>2025-10-18T03:26:32+00:00</lastmod>
+    <loc>http://localhost:8000/category/jobs-services-freelancers</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/jobs-services-repair-services</loc>
-    <lastmod>2025-10-18T03:26:32+00:00</lastmod>
+    <loc>http://localhost:8000/category/jobs-services-repair-services</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/electronics-gadgets</loc>
-    <lastmod>2025-10-18T03:26:33+00:00</lastmod>
+    <loc>http://localhost:8000/category/electronics-gadgets</loc>
+    <lastmod>2025-10-19T16:18:05+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/electronics-gadgets-phones</loc>
-    <lastmod>2025-10-18T03:26:34+00:00</lastmod>
+    <loc>http://localhost:8000/category/electronics-gadgets-phones</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/electronics-gadgets-laptops</loc>
-    <lastmod>2025-10-18T03:26:34+00:00</lastmod>
+    <loc>http://localhost:8000/category/electronics-gadgets-laptops</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/electronics-gadgets-tvs</loc>
-    <lastmod>2025-10-18T03:26:34+00:00</lastmod>
+    <loc>http://localhost:8000/category/electronics-gadgets-tvs</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/electronics-gadgets-accessories</loc>
-    <lastmod>2025-10-18T03:26:34+00:00</lastmod>
+    <loc>http://localhost:8000/category/electronics-gadgets-accessories</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/fashion-beauty</loc>
-    <lastmod>2025-10-18T03:26:34+00:00</lastmod>
+    <loc>http://localhost:8000/category/fashion-beauty</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/fashion-beauty-clothes</loc>
-    <lastmod>2025-10-18T03:26:34+00:00</lastmod>
+    <loc>http://localhost:8000/category/fashion-beauty-clothes</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/fashion-beauty-shoes</loc>
-    <lastmod>2025-10-18T03:26:34+00:00</lastmod>
+    <loc>http://localhost:8000/category/fashion-beauty-shoes</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/fashion-beauty-jewelry</loc>
-    <lastmod>2025-10-18T03:26:35+00:00</lastmod>
+    <loc>http://localhost:8000/category/fashion-beauty-jewelry</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/fashion-beauty-makeup</loc>
-    <lastmod>2025-10-18T03:26:35+00:00</lastmod>
+    <loc>http://localhost:8000/category/fashion-beauty-makeup</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/fashion-beauty-barbers</loc>
-    <lastmod>2025-10-18T03:26:35+00:00</lastmod>
+    <loc>http://localhost:8000/category/fashion-beauty-barbers</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/fashion-beauty-salons</loc>
-    <lastmod>2025-10-18T03:26:35+00:00</lastmod>
+    <loc>http://localhost:8000/category/fashion-beauty-salons</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/home-furniture</loc>
-    <lastmod>2025-10-18T03:26:36+00:00</lastmod>
+    <loc>http://localhost:8000/category/home-furniture</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/home-furniture-furniture</loc>
-    <lastmod>2025-10-18T03:26:36+00:00</lastmod>
+    <loc>http://localhost:8000/category/home-furniture-furniture</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/home-furniture-kitchenware</loc>
-    <lastmod>2025-10-18T03:26:36+00:00</lastmod>
+    <loc>http://localhost:8000/category/home-furniture-kitchenware</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/home-furniture-home-appliances</loc>
-    <lastmod>2025-10-18T03:26:36+00:00</lastmod>
+    <loc>http://localhost:8000/category/home-furniture-home-appliances</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/education-training</loc>
-    <lastmod>2025-10-18T03:26:37+00:00</lastmod>
+    <loc>http://localhost:8000/category/education-training</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/education-training-online-courses</loc>
-    <lastmod>2025-10-18T03:26:37+00:00</lastmod>
+    <loc>http://localhost:8000/category/education-training-online-courses</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/education-training-private-tutors</loc>
-    <lastmod>2025-10-18T03:26:37+00:00</lastmod>
+    <loc>http://localhost:8000/category/education-training-private-tutors</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/education-training-seminars</loc>
-    <lastmod>2025-10-18T03:26:37+00:00</lastmod>
+    <loc>http://localhost:8000/category/education-training-seminars</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/events-entertainment</loc>
-    <lastmod>2025-10-18T03:26:37+00:00</lastmod>
+    <loc>http://localhost:8000/category/events-entertainment</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/events-entertainment-dj-services</loc>
-    <lastmod>2025-10-18T03:26:38+00:00</lastmod>
+    <loc>http://localhost:8000/category/events-entertainment-dj-services</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/events-entertainment-venues</loc>
-    <lastmod>2025-10-18T03:26:38+00:00</lastmod>
+    <loc>http://localhost:8000/category/events-entertainment-venues</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/events-entertainment-event-planners</loc>
-    <lastmod>2025-10-18T03:26:38+00:00</lastmod>
+    <loc>http://localhost:8000/category/events-entertainment-event-planners</loc>
+    <lastmod>2025-10-19T16:18:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/events-entertainment-photography</loc>
-    <lastmod>2025-10-18T03:26:38+00:00</lastmod>
+    <loc>http://localhost:8000/category/events-entertainment-photography</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/pets-animals</loc>
-    <lastmod>2025-10-18T03:26:38+00:00</lastmod>
+    <loc>http://localhost:8000/category/pets-animals</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/pets-animals-dogs</loc>
-    <lastmod>2025-10-18T03:26:38+00:00</lastmod>
+    <loc>http://localhost:8000/category/pets-animals-dogs</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/pets-animals-cats</loc>
-    <lastmod>2025-10-18T03:26:39+00:00</lastmod>
+    <loc>http://localhost:8000/category/pets-animals-cats</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/pets-animals-birds</loc>
-    <lastmod>2025-10-18T03:26:39+00:00</lastmod>
+    <loc>http://localhost:8000/category/pets-animals-birds</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/pets-animals-pet-services</loc>
-    <lastmod>2025-10-18T03:26:39+00:00</lastmod>
+    <loc>http://localhost:8000/category/pets-animals-pet-services</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/agriculture</loc>
-    <lastmod>2025-10-18T03:26:39+00:00</lastmod>
+    <loc>http://localhost:8000/category/agriculture</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/agriculture-crops</loc>
-    <lastmod>2025-10-18T03:26:39+00:00</lastmod>
+    <loc>http://localhost:8000/category/agriculture-crops</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/agriculture-livestock</loc>
-    <lastmod>2025-10-18T03:26:40+00:00</lastmod>
+    <loc>http://localhost:8000/category/agriculture-livestock</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/agriculture-equipment</loc>
-    <lastmod>2025-10-18T03:26:40+00:00</lastmod>
+    <loc>http://localhost:8000/category/agriculture-equipment</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/health-fitness</loc>
-    <lastmod>2025-10-18T03:26:40+00:00</lastmod>
+    <loc>http://localhost:8000/category/health-fitness</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/health-fitness-gyms</loc>
-    <lastmod>2025-10-18T03:26:40+00:00</lastmod>
+    <loc>http://localhost:8000/category/health-fitness-gyms</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/health-fitness-supplements</loc>
-    <lastmod>2025-10-18T03:26:41+00:00</lastmod>
+    <loc>http://localhost:8000/category/health-fitness-supplements</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/health-fitness-hospitals</loc>
-    <lastmod>2025-10-18T03:26:42+00:00</lastmod>
+    <loc>http://localhost:8000/category/health-fitness-hospitals</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/health-fitness-trainers</loc>
-    <lastmod>2025-10-18T03:26:42+00:00</lastmod>
+    <loc>http://localhost:8000/category/health-fitness-trainers</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/business-investments</loc>
-    <lastmod>2025-10-18T03:26:42+00:00</lastmod>
+    <loc>http://localhost:8000/category/business-investments</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/business-investments-startups</loc>
-    <lastmod>2025-10-18T03:26:43+00:00</lastmod>
+    <loc>http://localhost:8000/category/business-investments-startups</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/business-investments-investors</loc>
-    <lastmod>2025-10-18T03:26:44+00:00</lastmod>
+    <loc>http://localhost:8000/category/business-investments-investors</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/business-investments-office-supplies</loc>
-    <lastmod>2025-10-18T03:26:44+00:00</lastmod>
+    <loc>http://localhost:8000/category/business-investments-office-supplies</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/travel-tourism</loc>
-    <lastmod>2025-10-18T03:26:44+00:00</lastmod>
+    <loc>http://localhost:8000/category/travel-tourism</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/travel-tourism-flights</loc>
-    <lastmod>2025-10-18T03:26:44+00:00</lastmod>
+    <loc>http://localhost:8000/category/travel-tourism-flights</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/travel-tourism-car-hire</loc>
-    <lastmod>2025-10-18T03:26:44+00:00</lastmod>
+    <loc>http://localhost:8000/category/travel-tourism-car-hire</loc>
+    <lastmod>2025-10-19T16:18:07+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/travel-tourism-hotels</loc>
-    <lastmod>2025-10-18T03:26:45+00:00</lastmod>
+    <loc>http://localhost:8000/category/travel-tourism-hotels</loc>
+    <lastmod>2025-10-19T16:18:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/travel-tourism-vacation-packages</loc>
-    <lastmod>2025-10-18T03:26:45+00:00</lastmod>
+    <loc>http://localhost:8000/category/travel-tourism-vacation-packages</loc>
+    <lastmod>2025-10-19T16:18:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/technology-software</loc>
-    <lastmod>2025-10-18T03:26:45+00:00</lastmod>
+    <loc>http://localhost:8000/category/technology-software</loc>
+    <lastmod>2025-10-19T16:18:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/technology-software-web-development</loc>
-    <lastmod>2025-10-18T03:26:45+00:00</lastmod>
+    <loc>http://localhost:8000/category/technology-software-web-development</loc>
+    <lastmod>2025-10-19T16:18:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/technology-software-software-tools</loc>
-    <lastmod>2025-10-18T03:26:45+00:00</lastmod>
+    <loc>http://localhost:8000/category/technology-software-software-tools</loc>
+    <lastmod>2025-10-19T16:18:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/technology-software-hosting</loc>
-    <lastmod>2025-10-18T03:26:46+00:00</lastmod>
+    <loc>http://localhost:8000/category/technology-software-hosting</loc>
+    <lastmod>2025-10-19T16:18:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/community-charity</loc>
-    <lastmod>2025-10-18T03:26:46+00:00</lastmod>
+    <loc>http://localhost:8000/category/community-charity</loc>
+    <lastmod>2025-10-19T16:18:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/community-charity-fundraisers</loc>
-    <lastmod>2025-10-18T03:26:46+00:00</lastmod>
+    <loc>http://localhost:8000/category/community-charity-fundraisers</loc>
+    <lastmod>2025-10-19T16:18:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/community-charity-volunteering</loc>
-    <lastmod>2025-10-18T03:26:46+00:00</lastmod>
+    <loc>http://localhost:8000/category/community-charity-volunteering</loc>
+    <lastmod>2025-10-19T16:18:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/community-charity-religious-ads</loc>
-    <lastmod>2025-10-18T03:26:46+00:00</lastmod>
+    <loc>http://localhost:8000/category/community-charity-religious-ads</loc>
+    <lastmod>2025-10-19T16:18:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/matrimonial-dating</loc>
-    <lastmod>2025-10-18T03:26:46+00:00</lastmod>
+    <loc>http://localhost:8000/category/matrimonial-dating</loc>
+    <lastmod>2025-10-19T16:18:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/matrimonial-dating-singles</loc>
-    <lastmod>2025-10-18T03:26:46+00:00</lastmod>
+    <loc>http://localhost:8000/category/matrimonial-dating-singles</loc>
+    <lastmod>2025-10-19T16:18:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/matrimonial-dating-marriage-proposals</loc>
-    <lastmod>2025-10-18T03:26:47+00:00</lastmod>
+    <loc>http://localhost:8000/category/matrimonial-dating-marriage-proposals</loc>
+    <lastmod>2025-10-19T16:18:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/art-design-media</loc>
-    <lastmod>2025-10-18T03:26:47+00:00</lastmod>
+    <loc>http://localhost:8000/category/art-design-media</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/art-design-media-graphic-design</loc>
-    <lastmod>2025-10-18T03:26:47+00:00</lastmod>
+    <loc>http://localhost:8000/category/art-design-media-graphic-design</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/art-design-media-printing</loc>
-    <lastmod>2025-10-18T03:26:47+00:00</lastmod>
+    <loc>http://localhost:8000/category/art-design-media-printing</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/art-design-media-branding</loc>
-    <lastmod>2025-10-18T03:26:48+00:00</lastmod>
+    <loc>http://localhost:8000/category/art-design-media-branding</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/construction-repairs</loc>
-    <lastmod>2025-10-18T03:26:48+00:00</lastmod>
+    <loc>http://localhost:8000/category/construction-repairs</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/construction-repairs-builders</loc>
-    <lastmod>2025-10-18T03:26:48+00:00</lastmod>
+    <loc>http://localhost:8000/category/construction-repairs-builders</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/construction-repairs-painters</loc>
-    <lastmod>2025-10-18T03:26:48+00:00</lastmod>
+    <loc>http://localhost:8000/category/construction-repairs-painters</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/construction-repairs-electricians</loc>
-    <lastmod>2025-10-18T03:26:48+00:00</lastmod>
+    <loc>http://localhost:8000/category/construction-repairs-electricians</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/food-restaurant</loc>
-    <lastmod>2025-10-18T03:26:48+00:00</lastmod>
+    <loc>http://localhost:8000/category/food-restaurant</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/food-restaurant-catering-services</loc>
-    <lastmod>2025-10-18T03:26:49+00:00</lastmod>
+    <loc>http://localhost:8000/category/food-restaurant-catering-services</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/food-restaurant-restaurants</loc>
-    <lastmod>2025-10-18T03:26:49+00:00</lastmod>
+    <loc>http://localhost:8000/category/food-restaurant-restaurants</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/food-restaurant-food-items</loc>
-    <lastmod>2025-10-18T03:26:49+00:00</lastmod>
+    <loc>http://localhost:8000/category/food-restaurant-food-items</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/others-miscellaneous</loc>
-    <lastmod>2025-10-18T03:26:49+00:00</lastmod>
+    <loc>http://localhost:8000/category/others-miscellaneous</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/others-miscellaneous-miscellaneous-items</loc>
-    <lastmod>2025-10-18T03:26:50+00:00</lastmod>
+    <loc>http://localhost:8000/category/others-miscellaneous-miscellaneous-items</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/category/others-miscellaneous-general-ads</loc>
-    <lastmod>2025-10-18T03:26:50+00:00</lastmod>
+    <loc>http://localhost:8000/category/others-miscellaneous-general-ads</loc>
+    <lastmod>2025-10-19T16:18:09+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/blog/category/advertising-tips</loc>
-    <lastmod>2025-10-18T03:07:01+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-            </url>
-    <url>
-    <loc>http://localhost/blog/category/digital-marketing</loc>
-    <lastmod>2025-10-18T03:07:01+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-            </url>
-    <url>
-    <loc>http://localhost/blog/category/business-entrepreneurship</loc>
-    <lastmod>2025-10-18T03:07:01+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-            </url>
-    <url>
-    <loc>http://localhost/blog/category/tech-innovation</loc>
-    <lastmod>2025-10-18T03:07:01+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-            </url>
-    <url>
-    <loc>http://localhost/blog/category/success-stories</loc>
-    <lastmod>2025-10-18T03:07:02+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-            </url>
-    <url>
-    <loc>http://localhost/blog/category/news-updates</loc>
-    <lastmod>2025-10-18T03:07:02+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-            </url>
-    <url>
-    <loc>http://localhost/blog/category/seo-content-strategy</loc>
-    <lastmod>2025-10-18T03:07:02+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-            </url>
-    <url>
-    <loc>http://localhost/blog/category/freelancing-remote-work</loc>
-    <lastmod>2025-10-18T03:07:02+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-            </url>
-    <url>
-    <loc>http://localhost/blog/category/finance-investment</loc>
-    <lastmod>2025-10-18T03:07:02+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-            </url>
-    <url>
-    <loc>http://localhost/blog/category/lifestyle-inspiration</loc>
-    <lastmod>2025-10-18T03:07:02+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-            </url>
-    <url>
-    <loc>http://localhost/blog/category/tutorials-guides</loc>
-    <lastmod>2025-10-18T03:07:02+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-            </url>
-    <url>
-    <loc>http://localhost/blog/category/events-promotions</loc>
-    <lastmod>2025-10-18T03:07:02+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-            </url>
-    <url>
-    <loc>http://localhost/rss/blog</loc>
-    <lastmod>2025-10-18T03:27:07+00:00</lastmod>
+    <loc>http://localhost:8000/rss/blog</loc>
+    <lastmod>2025-10-19T16:18:11+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
             </url>

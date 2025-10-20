@@ -76,6 +76,8 @@ class AIAssistantService
 
     protected function handleSupportRequest(ChatConversation $conversation): string
     {
+        $domain = config('app.domain', 'charymeld.com');
+
         // Only process if not already requested or connected
         if ($conversation->support_status === 'ai_only') {
             // Update conversation status
@@ -97,17 +99,19 @@ class AIAssistantService
             return "✅ **Support Request Received!**\n\n" .
                    "I've notified our support team about your request. A team member will join this conversation shortly to assist you personally.\n\n" .
                    "⏱️ **Average wait time:** 2-5 minutes\n\n" .
-                   "While you wait, feel free to describe your issue in detail so our team can help you faster!";
+                   "While you wait, feel free to describe your issue in detail so our team can help you faster!\n\n" .
+                   "**Need immediate help?** Contact our support team at support@{$domain}";
         } elseif ($conversation->support_status === 'requested') {
             return "⏳ **Your support request is pending...**\n\n" .
                    "Our team has been notified and will join shortly. Please hold tight!\n\n" .
-                   "In the meantime, feel free to provide more details about your issue.";
+                   "In the meantime, feel free to provide more details about your issue.\n\n" .
+                   "**Need immediate help?** Contact our support team at support@{$domain}";
         } elseif ($conversation->support_status === 'connected') {
             return "✅ **You're already connected to our support team!**\n\n" .
                    "A support agent is in this conversation. Please continue your conversation with them.";
         }
 
-        return "Our support team will assist you shortly.";
+        return "Our support team will assist you shortly.\n\n**Need immediate help?** Contact our support team at support@{$domain}";
     }
 
     protected function matchKeywords(string $message): ?string
@@ -161,12 +165,14 @@ class AIAssistantService
 
         // Contact - Now offers to connect to support
         if (preg_match('/\b(contact|reach|support|help desk|email|phone)\b/i', $message)) {
+            $domain = config('app.domain', 'charymeld.com');
             return "I can help you reach our support team! Here are your options:\n\n" .
                    "📞 **Quick Contact:**\n" .
-                   "• Email: support@charymeld.com\n" .
+                   "• Email: support@{$domain}\n" .
                    "• Phone: +234 (0) 123 456 789\n\n" .
                    "💬 **Or I can connect you with a live support agent right now!**\n\n" .
-                   "Just say \"connect me to support\" and I'll notify our team immediately.";
+                   "Just say \"connect me to support\" and I'll notify our team immediately.\n\n" .
+                   "**Need immediate help?** Contact our support team at support@{$domain}";
         }
 
         // Account related
