@@ -6,7 +6,16 @@ return [
     | Application Domain
     |--------------------------------------------------------------------------
     */
-    'domain' => env('APP_DOMAIN', 'charymeld.com'),
+    'domain' => env('APP_DOMAIN', 'charymeld-adverts.teamodigitalsolutions.com'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Force HTTPS
+    |--------------------------------------------------------------------------
+    | When enabled, the ForceHttps middleware will redirect all HTTP requests
+    | to HTTPS. Set FORCE_HTTPS=true in your .env for production.
+    */
+    'force_https' => env('FORCE_HTTPS', env('APP_FORCE_HTTPS', false)),
 
     /*
     |--------------------------------------------------------------------------

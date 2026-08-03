@@ -1,453 +1,243 @@
-# Hostinger Deployment Guide - HTTPS Configuration
+# Hostinger Deployment Guide
 
-This guide covers deploying CharyMeld Adverts to Hostinger with HTTPS enabled.
+**Live URL:** https://charymeld-adverts.teamodigitalsolutions.com  
+**File Manager path:** `public_html/charymeld-adverts/`  
+**Full file manager URL:** https://srv1388-files.hstgr.io/2d9f20806f71f13a/files/public_html/charymeld-adverts/
 
-## Prerequisites
+---
 
-- Hostinger hosting account with SSL certificate
-- Domain pointed to Hostinger nameservers
-- Database created in Hostinger cPanel
-- SSH access enabled (recommended)
+## 1. Subdomain Document Root (Critical)
 
-## 1. SSL Certificate Setup
+In Hostinger hPanel → **Subdomains**, set the document root for
+`charymeld-adverts.teamodigitalsolutions.com` to:
 
-### Enable SSL in Hostinger
+```
+public_html/charymeld-adverts/public
+```
 
-1. Log in to Hostinger hPanel
-2. Navigate to **SSL** section
-3. Install free SSL certificate for your domain
-4. Wait 10-15 minutes for SSL activation
-5. Verify HTTPS works: `https://yourdomain.com`
+> This means Hostinger serves requests from the Laravel `public/` folder directly,
+> which is the recommended setup. The root `.htaccess` and `public/.htaccess` also
+> handle the routing if the document root cannot be changed.
 
-## 2. Upload Application Files
+---
 
-### Option A: Via Git (Recommended)
+## 2. Upload Files
+
+### Option A — Git (Recommended, requires SSH)
 
 ```bash
-# SSH into your Hostinger account
-ssh u123456789@yourdomain.com
+ssh u[account]@teamodigitalsolutions.com
 
-# Navigate to public_html
-cd public_html
+cd public_html/charymeld-adverts
 
-# Clone repository
-git clone https://github.com/CharyMeld/charymeld-adverts.git .
+git clone https://github.com/your-repo/charymeld-adverts.git .
 
-# Install dependencies
 composer install --optimize-autoloader --no-dev
 npm install && npm run build
 ```
 
-### Option B: Via File Manager
+### Option B — File Manager / FTP
 
-1. Upload all files to `public_html` directory
-2. Extract if uploaded as ZIP
-3. Run composer via SSH or Hostinger terminal
+1. Compress the project (excluding `vendor/`, `node_modules/`, `.env`, `public/build/`).
+2. Upload the ZIP to `public_html/charymeld-adverts/` via the Hostinger File Manager.
+3. Extract in place.
+4. Run `composer install --optimize-autoloader --no-dev` via SSH or Hostinger Terminal.
+5. Run `npm install && npm run build` (or upload a pre-built `public/build/` folder).
+
+---
 
 ## 3. Environment Configuration
 
-### Create .env File
+### Copy and edit the .env file
 
 ```bash
-# Copy example file
 cp .env.example .env
-
-# Edit with your details
-nano .env
+nano .env   # or use File Manager editor
 ```
 
-### Required Settings
+### Minimum required values to fill in
 
 ```env
 APP_NAME="CharyMeld Adverts"
 APP_ENV=production
-APP_KEY=base64:YOUR_GENERATED_KEY
+APP_KEY=                          # filled by: php artisan key:generate
 APP_DEBUG=false
-APP_URL=https://yourdomain.com
+APP_URL=https://charymeld-adverts.teamodigitalsolutions.com
+APP_DOMAIN=charymeld-adverts.teamodigitalsolutions.com
 
-# Force HTTPS
 FORCE_HTTPS=true
+APP_FORCE_HTTPS=true
 
-# Database (from Hostinger cPanel)
+# --- Database (from Hostinger hPanel → MySQL Databases) ---
 DB_CONNECTION=mysql
-DB_HOST=localhost
+DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=u123456789_charymeld
-DB_USERNAME=u123456789_user
-DB_PASSWORD=your_database_password
+DB_DATABASE=your_db_name
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_db_password
 
-# Cache & Session
+# --- Cache/Session (file is safe for shared hosting) ---
 CACHE_DRIVER=file
 SESSION_DRIVER=file
 QUEUE_CONNECTION=database
 
-# Mail (Hostinger SMTP)
+# --- Mail (Hostinger SMTP) ---
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.hostinger.com
 MAIL_PORT=587
-MAIL_USERNAME=noreply@yourdomain.com
+MAIL_USERNAME=noreply@teamodigitalsolutions.com
 MAIL_PASSWORD=your_email_password
 MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS="noreply@yourdomain.com"
+MAIL_FROM_ADDRESS="noreply@teamodigitalsolutions.com"
 MAIL_FROM_NAME="CharyMeld Adverts"
 
-# Paystack
+# --- Paystack ---
 PAYSTACK_PUBLIC_KEY=pk_live_xxxxxxxxxxxxx
 PAYSTACK_SECRET_KEY=sk_live_xxxxxxxxxxxxx
-PAYSTACK_WEBHOOK_URL=https://yourdomain.com/webhook/paystack
+PAYSTACK_WEBHOOK_URL=https://charymeld-adverts.teamodigitalsolutions.com/webhook/paystack
 
-# Flutterwave
+# --- Flutterwave ---
 FLUTTERWAVE_PUBLIC_KEY=FLWPUBK-xxxxxxxxxxxxx
 FLUTTERWAVE_SECRET_KEY=FLWSECK-xxxxxxxxxxxxx
 FLUTTERWAVE_SECRET_HASH=your_webhook_secret_hash
-FLUTTERWAVE_WEBHOOK_URL=https://yourdomain.com/webhook/flutterwave
+FLUTTERWAVE_WEBHOOK_URL=https://charymeld-adverts.teamodigitalsolutions.com/webhook/flutterwave
 
-# Security
+# --- Security ---
 SESSION_LIFETIME=120
 SESSION_SECURE_COOKIE=true
 SESSION_SAME_SITE=strict
 ```
 
-### Generate Application Key
+### Generate application key
 
 ```bash
 php artisan key:generate
 ```
 
-## 4. Force HTTPS Configuration
+---
 
-### Update .htaccess
-
-Create/edit `public/.htaccess`:
-
-```apache
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-
-    # Force HTTPS
-    RewriteCond %{HTTPS} off
-    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-    # Remove public from URL
-    RewriteCond %{REQUEST_URI} !^/public/
-    RewriteRule ^(.*)$ /public/$1 [L]
-
-    # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-    # Redirect Trailing Slashes
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
-
-    # Send Requests To Front Controller
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
-</IfModule>
-```
-
-### Create Middleware for HTTPS Enforcement
-
-Already implemented in `app/Http/Middleware/ForceHttps.php`:
-
-```php
-<?php
-
-namespace App\Http\Middleware;
-
-use Closure;
-use Illuminate\Http\Request;
-
-class ForceHttps
-{
-    public function handle(Request $request, Closure $next)
-    {
-        if (!$request->secure() && config('app.force_https')) {
-            return redirect()->secure($request->getRequestUri(), 301);
-        }
-
-        return $next($request);
-    }
-}
-```
-
-## 5. Database Setup
-
-### Run Migrations
+## 4. Database Setup
 
 ```bash
-# Run migrations
+# Run all migrations
 php artisan migrate --force
 
-# Seed initial data (if needed)
+# Seed initial data (optional — only on first deploy)
 php artisan db:seed --force
 ```
 
-### Create Admin User
+---
+
+## 5. Storage & Permissions
 
 ```bash
-php artisan tinker
-```
+# Create the public storage symlink
+php artisan storage:link
 
-```php
-User::create([
-    'name' => 'Admin User',
-    'email' => 'admin@yourdomain.com',
-    'password' => bcrypt('your_secure_password'),
-    'role' => 'admin',
-    'is_active' => true,
-]);
-```
-
-## 6. File Permissions
-
-```bash
-# Set correct permissions
-chmod -R 755 storage bootstrap/cache
-chown -R www-data:www-data storage bootstrap/cache
-
-# Or on Hostinger
+# Set permissions
 chmod -R 755 storage bootstrap/cache
 ```
-
-## 7. Webhook Configuration
-
-### Paystack Webhook Setup
-
-1. Log in to [Paystack Dashboard](https://dashboard.paystack.com/)
-2. Navigate to **Settings** > **Webhooks**
-3. Add webhook URL: `https://yourdomain.com/webhook/paystack`
-4. Copy the webhook secret and add to `.env`:
-   ```env
-   PAYSTACK_WEBHOOK_SECRET=your_webhook_secret
-   ```
-
-### Flutterwave Webhook Setup
-
-1. Log in to [Flutterwave Dashboard](https://dashboard.flutterwave.com/)
-2. Navigate to **Settings** > **Webhooks**
-3. Add webhook URL: `https://yourdomain.com/webhook/flutterwave`
-4. Set webhook secret hash in `.env`
-5. Select events to monitor:
-   - `charge.completed`
-   - `transfer.completed`
-
-### Test Webhooks
-
-```bash
-# Test Paystack webhook
-curl -X POST https://yourdomain.com/webhook/paystack \
-  -H "Content-Type: application/json" \
-  -d '{"event":"charge.success"}'
-
-# Test Flutterwave webhook
-curl -X POST https://yourdomain.com/webhook/flutterwave \
-  -H "Content-Type: application/json" \
-  -d '{"event":"charge.completed"}'
-```
-
-## 8. Optimization for Production
-
-### Cache Configuration
-
-```bash
-# Cache routes and config
-php artisan route:cache
-php artisan config:cache
-php artisan view:cache
-
-# Clear cache if needed
-php artisan cache:clear
-php artisan route:clear
-php artisan config:clear
-php artisan view:clear
-```
-
-### Enable OPcache
-
-In Hostinger hPanel:
-1. Go to **PHP Configuration**
-2. Enable **OPcache**
-3. Set recommended values:
-   - `opcache.enable=1`
-   - `opcache.memory_consumption=128`
-   - `opcache.max_accelerated_files=10000`
-
-## 9. Security Checklist
-
-- [ ] SSL certificate active and valid
-- [ ] `APP_DEBUG=false` in production
-- [ ] `APP_ENV=production`
-- [ ] Strong `APP_KEY` generated
-- [ ] Database credentials secure
-- [ ] `.env` file not in version control
-- [ ] HTTPS forced via middleware and .htaccess
-- [ ] Secure cookies enabled (`SESSION_SECURE_COOKIE=true`)
-- [ ] CSRF protection enabled (default in Laravel)
-- [ ] Webhook secrets configured
-- [ ] File permissions set correctly (755 for directories, 644 for files)
-- [ ] Error logging configured (check `storage/logs`)
-
-## 10. Testing Checklist
-
-### SSL/HTTPS Tests
-
-- [ ] `https://yourdomain.com` loads correctly
-- [ ] `http://yourdomain.com` redirects to HTTPS
-- [ ] SSL certificate shows valid (green padlock)
-- [ ] No mixed content warnings
-- [ ] Test with [SSL Labs](https://www.ssllabs.com/ssltest/)
-
-### Application Tests
-
-- [ ] Homepage loads
-- [ ] User registration works
-- [ ] User login works
-- [ ] Admin dashboard accessible
-- [ ] Campaign creation works
-- [ ] File uploads work
-- [ ] Emails send correctly
-
-### Payment Gateway Tests
-
-- [ ] Paystack test payment succeeds
-- [ ] Paystack webhook receives notifications
-- [ ] Flutterwave test payment succeeds
-- [ ] Flutterwave webhook receives notifications
-- [ ] Transaction records created in database
-
-### Webhook Verification
-
-```bash
-# Check Laravel logs for webhook hits
-tail -f storage/logs/laravel.log
-
-# Or check webhook endpoints directly
-curl -I https://yourdomain.com/webhook/paystack
-curl -I https://yourdomain.com/webhook/flutterwave
-```
-
-## 11. Monitoring and Maintenance
-
-### Log Monitoring
-
-```bash
-# View recent logs
-tail -100 storage/logs/laravel.log
-
-# Monitor in real-time
-tail -f storage/logs/laravel.log
-```
-
-### Database Backups
-
-Set up automated backups in Hostinger:
-1. Navigate to **Backups** in hPanel
-2. Enable automatic weekly backups
-3. Download manual backup before major updates
-
-### Updates
-
-```bash
-# Pull latest code
-git pull origin main
-
-# Update dependencies
-composer install --optimize-autoloader --no-dev
-npm install && npm run build
-
-# Run migrations
-php artisan migrate --force
-
-# Clear and rebuild cache
-php artisan cache:clear
-php artisan route:cache
-php artisan config:cache
-php artisan view:cache
-```
-
-## 12. Common Issues
-
-### Issue: Mixed Content Warning
-
-**Solution**: Check all asset URLs use HTTPS
-```php
-// In blade templates
-{{ secure_asset('css/app.css') }}
-{{ secure_url('path') }}
-```
-
-### Issue: Webhook Not Receiving Data
-
-**Solution**:
-1. Check webhook URL is publicly accessible
-2. Verify SSL certificate is valid
-3. Check Laravel logs for errors
-4. Ensure webhook secret matches
-5. Test with curl command
-
-### Issue: 500 Internal Server Error
-
-**Solution**:
-1. Check `storage/logs/laravel.log`
-2. Verify file permissions
-3. Check `.env` configuration
-4. Clear all caches
-5. Ensure database connection works
-
-### Issue: Assets Not Loading
-
-**Solution**:
-1. Run `npm run build`
-2. Check `public/build` directory exists
-3. Verify `.htaccess` configuration
-4. Clear browser cache
-
-## Support
-
-For issues specific to:
-- **Hostinger**: Contact Hostinger support
-- **Paystack**: Check [Paystack Documentation](https://paystack.com/docs/)
-- **Flutterwave**: Check [Flutterwave Documentation](https://developer.flutterwave.com/docs)
-- **Laravel**: Check [Laravel Documentation](https://laravel.com/docs)
-
-## Quick Reference
-
-### Useful Commands
-
-```bash
-# Check PHP version
-php -v
-
-# Check Laravel version
-php artisan --version
-
-# List all routes
-php artisan route:list
-
-# Create admin user
-php artisan tinker
-
-# Check database connection
-php artisan db:show
-
-# Clear all caches
-php artisan optimize:clear
-
-# Rebuild caches
-php artisan optimize
-```
-
-### Hostinger Paths
-
-- **Application Root**: `/home/u123456789/domains/yourdomain.com/public_html`
-- **Public Directory**: `/home/u123456789/domains/yourdomain.com/public_html/public`
-- **Storage**: `/home/u123456789/domains/yourdomain.com/public_html/storage`
-- **Logs**: `/home/u123456789/domains/yourdomain.com/public_html/storage/logs`
 
 ---
 
-**Last Updated**: 2025-10-15
-**Version**: 1.0
+## 6. Production Optimisation
+
+```bash
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan event:cache
+```
+
+To clear all caches later:
+
+```bash
+php artisan optimize:clear
+```
+
+---
+
+## 7. Payment Webhook URLs
+
+Register these exact URLs in your payment dashboards:
+
+| Gateway     | Webhook URL |
+|-------------|-------------|
+| Paystack    | `https://charymeld-adverts.teamodigitalsolutions.com/webhook/paystack` |
+| Flutterwave | `https://charymeld-adverts.teamodigitalsolutions.com/webhook/flutterwave` |
+
+---
+
+## 8. SSL Certificate
+
+1. Hostinger hPanel → **SSL** → install free Let's Encrypt certificate for
+   `charymeld-adverts.teamodigitalsolutions.com`.
+2. Wait ~10 minutes for activation.
+3. HTTPS is enforced by both `public/.htaccess` and the `ForceHttps` middleware.
+
+---
+
+## 9. Post-Deploy Checklist
+
+- [ ] Subdomain document root set to `public_html/charymeld-adverts/public`
+- [ ] SSL certificate installed and active
+- [ ] `.env` created with production values (never commit this file)
+- [ ] `APP_KEY` generated (`php artisan key:generate`)
+- [ ] `APP_DEBUG=false`
+- [ ] Database credentials correct, migrations run
+- [ ] `php artisan storage:link` executed
+- [ ] Caches built (`php artisan optimize`)
+- [ ] Paystack & Flutterwave webhook URLs updated in dashboards
+- [ ] `https://charymeld-adverts.teamodigitalsolutions.com` loads correctly
+- [ ] HTTP → HTTPS redirect works
+- [ ] Admin login works
+- [ ] File uploads work (check `storage/app/public` permissions)
+
+---
+
+## 10. Updating the Application
+
+```bash
+git pull origin main
+composer install --optimize-autoloader --no-dev
+npm run build
+php artisan migrate --force
+php artisan optimize:clear
+php artisan optimize
+```
+
+---
+
+## 11. Useful Commands
+
+```bash
+php artisan --version          # Laravel version
+php artisan route:list         # List all routes
+php artisan db:show            # Check DB connection
+tail -100 storage/logs/laravel.log   # View recent errors
+```
+
+---
+
+## 12. Common Issues
+
+### 500 Internal Server Error
+- Check `storage/logs/laravel.log`
+- Verify `.env` exists and `APP_KEY` is set
+- Check `storage/` and `bootstrap/cache/` are writable (`chmod -R 755`)
+
+### Assets not loading / 404 on CSS/JS
+- Run `npm run build` and ensure `public/build/` is uploaded
+- Or run `npm run build` on the server if Node.js is available
+
+### Mixed content warnings
+- Ensure `APP_URL` starts with `https://`
+- Ensure `FORCE_HTTPS=true` and `APP_FORCE_HTTPS=true` are set
+
+### Session / cookie issues
+- Set `SESSION_DOMAIN=charymeld-adverts.teamodigitalsolutions.com` in `.env`
+- Ensure `SESSION_SECURE_COOKIE=true`
+
+---
+
+**Last Updated:** 2026-04-12

@@ -160,7 +160,7 @@ Webhooks ensure your system is notified when payments succeed, even if user clos
 
 ### 4.1 Paystack Webhook
 1. Go to: **Settings** → **API Keys & Webhooks**
-2. Set Webhook URL: `https://yourdomain.com/webhook/paystack`
+2. Set Webhook URL: `https://charymeld-adverts.teamodigitalsolutions.com/webhook/paystack`
 3. Copy the webhook secret
 4. Add to `.env`:
    ```env
@@ -169,7 +169,7 @@ Webhooks ensure your system is notified when payments succeed, even if user clos
 
 ### 4.2 Flutterwave Webhook
 1. Go to: **Settings** → **Webhooks**
-2. Set Webhook URL: `https://yourdomain.com/webhook/flutterwave`
+2. Set Webhook URL: `https://charymeld-adverts.teamodigitalsolutions.com/webhook/flutterwave`
 3. Set Secret Hash (same as FLUTTERWAVE_SECRET_HASH)
 
 ---
