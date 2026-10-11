@@ -10,8 +10,10 @@ class SeoHelper
     public static function generateAdvertMeta($advert): array
     {
         $title = $advert->title . ' - CharyMeld Adverts';
-        $description = self::truncate($advert->description, 160);
-        $image = $advert->primaryImage?->image_path ?? asset('images/default-ad.jpg');
+        $description = self::truncate(strip_tags($advert->description), 160);
+        $image = $advert->primaryImage
+            ? asset('storage/' . $advert->primaryImage->image_path)
+            : asset('images/default-ad.jpg');
         $url = route('advert.show', $advert->slug);
 
         return [
@@ -109,6 +111,42 @@ class SeoHelper
     }
 
     /**
+     * Generate site-wide Organization and WebSite (with search) schema
+     */
+    public static function generateSiteSchema(): string
+    {
+        $schema = [
+            '@context' => 'https://schema.org',
+            '@graph' => [
+                [
+                    '@type' => 'Organization',
+                    '@id' => url('/') . '#organization',
+                    'name' => config('app.name'),
+                    'url' => url('/'),
+                    'logo' => asset('images/logo.png'),
+                ],
+                [
+                    '@type' => 'WebSite',
+                    '@id' => url('/') . '#website',
+                    'name' => config('app.name'),
+                    'url' => url('/'),
+                    'publisher' => ['@id' => url('/') . '#organization'],
+                    'potentialAction' => [
+                        '@type' => 'SearchAction',
+                        'target' => [
+                            '@type' => 'EntryPoint',
+                            'urlTemplate' => route('search') . '?q={search_term_string}',
+                        ],
+                        'query-input' => 'required name=search_term_string',
+                    ],
+                ],
+            ],
+        ];
+
+        return json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_PRETTY_PRINT);
+    }
+
+    /**
      * Generate Schema.org markup for advert
      */
     private static function generateAdvertSchema($advert): string
@@ -117,8 +155,8 @@ class SeoHelper
             '@context' => 'https://schema.org',
             '@type' => 'Product',
             'name' => $advert->title,
-            'description' => $advert->description,
-            'image' => $advert->primaryImage?->image_path,
+            'description' => self::truncate(strip_tags($advert->description), 5000),
+            'image' => $advert->primaryImage ? asset('storage/' . $advert->primaryImage->image_path) : asset('images/default-ad.jpg'),
             'url' => route('advert.show', $advert->slug),
         ];
 
@@ -135,7 +173,7 @@ class SeoHelper
             $schema['category'] = $advert->category->name;
         }
 
-        return json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+        return json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_PRETTY_PRINT);
     }
 
     /**
@@ -148,7 +186,7 @@ class SeoHelper
             '@type' => 'BlogPosting',
             'headline' => $blog->title,
             'description' => self::truncate(strip_tags($blog->content), 200),
-            'image' => $blog->featured_image,
+            'image' => $blog->featured_image ? asset('storage/' . $blog->featured_image) : asset('images/default-blog.jpg'),
             'datePublished' => $blog->published_at?->toIso8601String(),
             'dateModified' => $blog->updated_at->toIso8601String(),
             'author' => [
@@ -165,7 +203,7 @@ class SeoHelper
             ],
         ];
 
-        return json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+        return json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_PRETTY_PRINT);
     }
 
     /**
@@ -181,7 +219,7 @@ class SeoHelper
             'url' => route('category.show', $category->slug),
         ];
 
-        return json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+        return json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_PRETTY_PRINT);
     }
 
     /**
@@ -256,6 +294,6 @@ class SeoHelper
             'itemListElement' => $itemListElement,
         ];
 
-        return json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+        return json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_PRETTY_PRINT);
     }
 }

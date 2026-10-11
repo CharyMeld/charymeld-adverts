@@ -6,7 +6,18 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- SEO Meta Tags -->
-    <title>{{ $title ?? config('app.name', 'CharyMeld Adverts') }}</title>
+    @isset($seo)
+        @include('components.seo-meta')
+    @else
+        <title>{{ $title ?? config('app.name', 'CharyMeld Adverts') }}</title>
+        <meta name="description" content="Buy and sell anything on CharyMeld Adverts: browse listings across property, vehicles, electronics, jobs, services and more.">
+        <link rel="canonical" href="{{ url()->current() }}">
+        @if(request()->routeIs('home', 'home.adverts'))
+        <script type="application/ld+json">
+{!! \App\Helpers\SeoHelper::generateSiteSchema() !!}
+        </script>
+        @endif
+    @endisset
 
     <!-- Search Engine Verification -->
     <meta name="google-site-verification" content="{{ config('seo.google_verification') }}" />

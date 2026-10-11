@@ -57,7 +57,6 @@
 {{-- Additional SEO Meta Tags --}}
 <meta name="robots" content="index, follow">
 <meta name="googlebot" content="index, follow">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="language" content="English">
 <meta name="revisit-after" content="7 days">
