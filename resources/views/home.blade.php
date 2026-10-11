@@ -138,6 +138,7 @@
             // Get only 15 latest adverts per category
             $latestAdverts = $category->adverts->sortByDesc('created_at')->take(15);
         @endphp
+        @continue($latestAdverts->isEmpty())
 
         <div class="mb-12 border-b border-gray-200 pb-8">
             <h3 class="text-2xl font-semibold mb-6 flex items-center">
