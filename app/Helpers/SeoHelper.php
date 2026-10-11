@@ -160,7 +160,8 @@ class SeoHelper
             'url' => route('advert.show', $advert->slug),
         ];
 
-        if ($advert->price) {
+        // A price of 0 is a valid free offer, so only skip when no price is set
+        if ($advert->price !== null) {
             $schema['offers'] = [
                 '@type' => 'Offer',
                 'price' => $advert->price,
