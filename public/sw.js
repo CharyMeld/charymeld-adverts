@@ -2,12 +2,14 @@
 // Compatible with Chrome, Firefox, Safari, Edge, Samsung Internet
 'use strict';
 
-const CACHE_NAME = 'charymeld-adverts-v2';
+// Bump the version to purge caches on existing installs
+const CACHE_NAME = 'charymeld-adverts-v3';
 const OFFLINE_URL = '/offline.html';
 
 // Assets to cache immediately
 const PRECACHE_ASSETS = [
     '/',
+    OFFLINE_URL,
     '/manifest.json'
 ];
 
@@ -75,6 +77,24 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
+    // Pages (HTML navigations): network first so visitors always see current listings;
+    // fall back to the cached copy, then the offline page, only when the network fails
+    if (event.request.mode === 'navigate') {
+        event.respondWith(
+            fetch(event.request)
+                .then((response) => {
+                    if (response && response.status === 200 && !response.redirected) {
+                        const responseToCache = response.clone();
+                        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseToCache));
+                    }
+                    return response;
+                })
+                .catch(() => caches.match(event.request).then((cached) => cached || caches.match(OFFLINE_URL)))
+        );
+        return;
+    }
+
+    // Static assets: cache first, refreshed in the background
     event.respondWith(
         caches.match(event.request)
             .then((cachedResponse) => {
