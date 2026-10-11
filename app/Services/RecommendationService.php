@@ -134,7 +134,7 @@ class RecommendationService
         return Cache::remember($cacheKey, now()->addHours(6), function () use ($advert, $limit) {
             // Find blog posts with similar keywords or category
             return DB::table('blogs')
-                ->where('status', 'published')
+                ->where('is_published', true)
                 ->where(function ($query) use ($advert) {
                     $keywords = explode(' ', $advert->title);
                     foreach (array_slice($keywords, 0, 5) as $keyword) {
